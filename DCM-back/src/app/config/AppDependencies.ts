@@ -32,23 +32,41 @@ import { MailJetGateway } from '../../adapters/gateways/mailJet/MailJetGateway';
 import Mailjet from 'node-mailjet';
 import { GeneratePasswordRecovery } from '../../core/usecase/user/password/GeneratePasswordRecovery';
 import { ResetPassword } from '../../core/usecase/user/password/ResetPassword';
-import { GetPlotByCodeName } from '../..//core/usecase/plot/GetPlotByCodeName';
+import { GetPlotByCodeName } from '../../core/usecase/plot/GetPlotByCodeName';
+import { MysqlUserRepository } from '../../adapters/repositories/mysql/MysqlUserRepository';
+import { createDb } from '../../adapters/repositories/mysql/connectDb';
+import { MysqlPlotRepository } from '../../adapters/repositories/mysql/MysqlPlotRepository';
+import { MysqlEventCultureRepository } from '../../adapters/repositories/mysql/MysqlEventCultureRepository';
+import { Connection } from 'mysql2';
+
+
+let connect: Promise<Connection>
+if (process.env.DB === "mysql") {
+    connect = createDb();
+}
 
 export class AppDependencies extends Container {
-    init(){
+    async init() {
+        if (process.env.DB === "mongoDb") {
+            this.bind(DCMIdentifiers.userRepository).toConstantValue(new MongoDbUserRepository())
+            this.bind(DCMIdentifiers.eventCultureRepository).toConstantValue(new MongoDbEventCultureRepository())
+            this.bind(DCMIdentifiers.plotRepository).toConstantValue(new MongoDbPlotRepository())
+        }
+        if (process.env.DB === "mysql") {
+            this.bind(DCMIdentifiers.userRepository).toConstantValue(new MysqlUserRepository(await connect))
+            this.bind(DCMIdentifiers.eventCultureRepository).toConstantValue(new MysqlEventCultureRepository(await connect))
+            this.bind(DCMIdentifiers.plotRepository).toConstantValue(new MysqlPlotRepository(await connect))
+        }
+
         this.bind(DCMIdentifiers.passwordGateway).toConstantValue(new BcryptPasswordGateway())
-        this.bind(DCMIdentifiers.userRepository).toConstantValue(new MongoDbUserRepository())
-        this.bind(DCMIdentifiers.eventCultureRepository).toConstantValue(new MongoDbEventCultureRepository())
-        this.bind(DCMIdentifiers.plotRepository).toConstantValue(new MongoDbPlotRepository())
         this.bind(DCMIdentifiers.identityGateway).toConstantValue(new JwtIdentityGateway(process.env.JWT_KEY))
-        
         this.bind(DCMIdentifiers.emailGateway).toConstantValue(new MailJetGateway(new Mailjet({
             apiKey: process.env.MJ_APIKEY_PUBLIC,
             apiSecret: process.env.MJ_APIKEY_PRIVATE,
-          }) ))
-        
+        })))
+
         this.bind(AuthenticationMiddleware).toSelf()
-        
+
         this.bind(UserController).toSelf()
         this.bind(SignIn).toSelf()
         this.bind(CreateUser).toSelf()

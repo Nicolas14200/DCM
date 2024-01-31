@@ -1,3 +1,4 @@
+import { UpdateUserProps } from "@src/core/usecase/user/UpdateUser";
 import { UserError } from "../../../../core/domain/models/errors/UserError";
 import { User } from "../../../domain/entities/user/User";
 import { UserRepository } from "../../../domain/repositories/UserRepository";
@@ -5,6 +6,9 @@ import { UserRepository } from "../../../domain/repositories/UserRepository";
 export class InMemoryUserRepository implements UserRepository {
 
     constructor(readonly userMap: Map < string, User > ){
+    }
+    update(payload: UpdateUserProps): Promise<void> {
+        throw new Error("Method not implemented.");
     }
 
     async getById(id: string): Promise<User> {

@@ -7,6 +7,7 @@ export class EventCultureApiResponseMapper implements Mapper<EventCulture, Event
         return {
             date:eventCulture.props.date,
             note: eventCulture.props.note,
+            plotId: eventCulture.props.plotId,
             typeEventCulture: eventCulture.props.typeEventCulture,
             machine: eventCulture.props.machine,
             bringType: eventCulture.props.bringType,
@@ -18,6 +19,7 @@ export class EventCultureApiResponseMapper implements Mapper<EventCulture, Event
             succes: eventCulture.props.succes,
             disease: eventCulture.props.disease,
             bug: eventCulture.props.bug,
+            
         }
     }
 }

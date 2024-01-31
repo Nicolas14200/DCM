@@ -1,7 +1,6 @@
-import { Series } from "../../../../core/domain/valueObjects/Series";
 import { StarsLevel } from "../../../../core/domain/valueObjects/StarsLevel";
-import { EventCulture } from "../eventCulture/EventCulture";
 import { v4 } from "uuid";
+import { Series } from "../../valueObjects/Series";
 
 export interface PlotProps {
     id: string;
@@ -60,15 +59,15 @@ export class Plot {
     }
 
     addEventCulture(newEventCultureId: string){
-        this.props.eventCulture.push(newEventCultureId)
+        this.props.eventCulture.push(newEventCultureId);
     }
 
     addSeries(series: Series){
-        this.props.series.push(series)
+        this.props.series.push(series);
     }
 
     addSubPlot(plotId: string){
-        this.props.subPlot.push(plotId)
+        this.props.subPlot.push(plotId);
     }
     
 }

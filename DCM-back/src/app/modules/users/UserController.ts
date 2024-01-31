@@ -100,7 +100,7 @@ export class UserController {
         password: cmd.password,
         role: cmd.role,
       };
-
+ 
       const user = await this._createUser.execute(payload);
       const token = await this._identityGateway.generate({
         id: user.props.id,
@@ -143,17 +143,19 @@ export class UserController {
     }
   }
 
-  //@UseBefore(AuthenticationMiddleware)
+  @UseBefore(AuthenticationMiddleware)
   @Put("/")
   async updateUser(
     @Res() response: Response,
     @Body() cmd: UpdateUserCommand
   ) {
     try {
+      
       const user = await this._updateUser.execute({
         id: cmd.id,
         name: cmd.name,
         password: cmd.password,
+        email : cmd.email
       })
       return response.status(200).send({
         ...this.userApiResponseMapper.fromDomain(user),
@@ -166,7 +168,7 @@ export class UserController {
     }
   }
   
-  //@UseBefore(AuthenticationMiddleware)
+  @UseBefore(AuthenticationMiddleware)
   @Get("/:id")
   async getUserById(   
     @Req() request: Request, 
@@ -185,7 +187,7 @@ export class UserController {
     }
   }
 
-  //@UseBefore(AuthenticationMiddleware)
+  @UseBefore(AuthenticationMiddleware)
   @Delete("/")
   async deleteUser(
     @Body() cmd: DeleteUserCommand, 

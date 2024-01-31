@@ -1,0 +1,13 @@
+# syntax=docker/dockerfile:1
+
+ARG NODE_VERSION=20.10.0
+
+FROM node:${NODE_VERSION}
+
+WORKDIR /usr/src/app
+
+COPY . .
+
+CMD  npm install -g typescript && tsc && node dist/src/index.js
+
+EXPOSE 3000

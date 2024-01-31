@@ -37,7 +37,8 @@ export class User {
 
     update(payload: UpdateUserProps ){
         this.props.name = payload.name,
-        this.props.password = payload.password
+        this.props.password = payload.password,
+        this.props.email = payload.email
     }
 
     setSecurityCode(securityCode: string) {

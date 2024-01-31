@@ -11,6 +11,7 @@ export interface UpdateUserProps {
     id: string;
     name:string;
     password:string;
+    email:string;
 }
 
 @injectable()
@@ -25,12 +26,20 @@ export class UpdateUser implements Usecase<UpdateUserProps, User>{
         const user: User = await this.userRepository.getById(payload.id);
         const password = new Password(payload.password).value;
         const hash = await this.passwordGateway.encrypt(password);
+
         user.update({
             name: payload.name,
             password: hash,
-            id: user.props.id
+            id: user.props.id,
+            email:payload.email
         });
-        this.userRepository.save(user);
+        
+        this.userRepository.update({
+            id: user.props.id,
+            name: user.props.name,
+            password: user.props.password,
+            email:user.props.email
+        });
         return user
     }
     async canExecute(identity: Identity): Promise<boolean> {

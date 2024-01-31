@@ -1,9 +1,12 @@
-import { Plot } from "@src/core/domain/entities/plot/Plot";
+
 import { Usecase } from "../Usecase";
-import { Identity } from "@src/core/domain/valueObjects/Identitty";
+
 import { inject, injectable } from "inversify";
 import { DCMIdentifiers } from "../DCMIdentifiers";
-import { PlotRepository } from "@src/core/domain/repositories/PlotRepository";
+import { Plot } from "../../domain/entities/plot/Plot";
+import { PlotRepository } from "../../domain/repositories/PlotRepository";
+import { Identity } from "../../domain/valueObjects/Identitty";
+
 
 @injectable()
 export class GetPlotByCodeName implements Usecase<string, Plot>{

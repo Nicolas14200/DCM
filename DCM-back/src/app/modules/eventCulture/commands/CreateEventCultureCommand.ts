@@ -24,7 +24,7 @@ export class CreateEventCultureCommand {
     @IsOptional()
     bringType: BringType
 
-    @IsString()
+    @IsNumber()
     @IsOptional()
     quantity: number
 

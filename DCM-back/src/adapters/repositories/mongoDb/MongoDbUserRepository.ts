@@ -5,9 +5,13 @@ import { UserModel } from "./models/UserModel";
 import { MongoDbUserMappper, MongoDbUserMappperProps } from "./mappers/mongoDbUserMappper";
 import { UserError } from "../../../core/domain/models/errors/UserError";
 import { injectable } from "inversify";
+import { UpdateUserProps } from '@src/core/usecase/user/UpdateUser';
 
 @injectable()
 export class MongoDbUserRepository implements UserRepository {
+    update(payload: UpdateUserProps): Promise<void> {
+        throw new Error('Method not implemented.');
+    }
 
     private mongoDbUserMappper: MongoDbUserMappper = new MongoDbUserMappper();
 

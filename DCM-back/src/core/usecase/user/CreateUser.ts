@@ -8,11 +8,11 @@ import { Usecase } from "../Usecase";
 import { DCMIdentifiers } from "../DCMIdentifiers";
 import { UserError } from "../../../core/domain/models/errors/UserError";
 
-export interface CreateUserProps  {
-    name:string;
-    email:string;
-    password:string;
-    role:Role;
+export interface CreateUserProps {
+    name: string;
+    email: string;
+    password: string;
+    role: Role;
 }
 
 @injectable()
@@ -22,25 +22,30 @@ export class CreateUser implements Usecase<CreateUserProps, User>{
         private userRepository: UserRepository,
         @inject(DCMIdentifiers.passwordGateway)
         private passwordGateway: PasswordGateway
-      ) {}
+    ) { }
     async execute(payload: CreateUserProps): Promise<User> {
+
         const password = new Password(payload.password).value;
+
         const hash = await this.passwordGateway.encrypt(password);
-        try{
-        const userExist = await this.userRepository.getByEmail(payload.email);
-        if (userExist){
-            throw new UserError.UserExist("USER_EXIST");
-        }
-        } catch(e){
-            if ( e.message === "USER_NOT_FOUND") {
+
+        try {
+            const userExist = await this.userRepository.getByEmail(payload.email);
+            console.log("userExist", userExist);
+
+            if (userExist) {
+                throw new UserError.UserExist("USER_EXIST");
+            }
+        } catch (e) {
+            if (e.message === "USER_NOT_FOUND") {
                 const user = User.create({
-                    name:payload.name,
-                    email:payload.email,
-                    password:hash,
-                    role:payload.role, 
-                 });
-                 await this.userRepository.save(user);
-                 return user;
+                    name: payload.name,
+                    email: payload.email,
+                    password: hash,
+                    role: payload.role,
+                });
+                await this.userRepository.save(user);
+                return user;
             }
             throw e;
         }

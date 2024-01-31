@@ -1,10 +1,10 @@
-import { Identity } from "@src/core/domain/valueObjects/Identitty";
 import { Usecase } from "../../Usecase";
 import { inject, injectable } from "inversify";
 import { DCMIdentifiers } from "../../DCMIdentifiers";
-import { UserRepository } from "@src/core/domain/repositories/UserRepository";
-import { EmailGateway } from "@src/core/domain/gateways/EmailGateway";
 import { v4 } from "uuid";
+import { UserRepository } from "../../../domain/repositories/UserRepository";
+import { EmailGateway } from "../../../domain/gateways/EmailGateway";
+import { Identity } from "../../../domain/valueObjects/Identitty";
 
 @injectable()
 export class GeneratePasswordRecovery implements Usecase<string, string> {

@@ -1,3 +1,4 @@
+import { UpdateUserProps } from "../../../../src/core/usecase/user/UpdateUser";
 import { User } from "../entities/user/User";
 
 export interface UserRepository {
@@ -5,4 +6,5 @@ export interface UserRepository {
     getByEmail(email: string): Promise<User>;
     getById(id: string) : Promise <User>;
     delete(id: string): Promise<void>;
+    update(payload: UpdateUserProps): Promise<void>;
 } 

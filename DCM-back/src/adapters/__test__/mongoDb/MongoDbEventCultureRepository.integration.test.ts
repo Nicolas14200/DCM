@@ -46,7 +46,6 @@ describe("Integration - MongoDbEventCultureRepository", () => {
         await eventCultureRepo.save(eventCulture2);
         await eventCultureRepo.save(eventCulture3);
         const eventsCultures = await eventCultureRepo.getEventCultureByPlotId(eventCulture.props.plotId);
-        console.log(eventsCultures)
         expect(eventsCultures[0].props.note).toEqual("Note")
     })
 

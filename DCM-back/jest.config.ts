@@ -9,6 +9,7 @@ const config: Config.InitialOptions = {
         "**/__tests__/**/*.test.[jt]s?(x)",
         "**/?(*.)+(spec|test).[tj]s?(x)"
     ],
+    setupFiles: ["<rootDir>/jest.setup.ts"],
     "collectCoverage": true,
     "coverageReporters": ["json", "html"],
     coverageThreshold: {

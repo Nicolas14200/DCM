@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: DCM-db-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: DCM
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - /home/nico/Bureau/DCM/DCM/DCM-back/src/adapters/repositories/mysql/models:/models
+      - /home/nico/Bureau/DCM/DCM/DCM-back/src/adapters/repositories/mysql/resets:/resets
+      - /home/nico/Bureau/DCM/DCM/DCM-back/src/adapters/repositories/mysql/seeds:/seeds
+    networks:
+      - my_network
+
+  node:
+    image: nodejs
+    container_name: DCM-server
+    networks:
+      - my_network
+    ports:
+      - "3000:3000"
+
+  mongodb:
+    image: mongo:6.0.13
+    container_name: DCM-db-mongo
+    ports:
+      - "8000:8000"
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge
+
+volumes:
+  mysql_data: 
+    

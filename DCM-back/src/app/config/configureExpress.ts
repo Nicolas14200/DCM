@@ -6,7 +6,7 @@ import { AppDependencies } from "./AppDependencies";
 import { PlotController } from "../../app/modules/plot/PlotController";
 import { EventCultureController } from "../../app/modules/eventCulture/EventCultureController";
 
-export function configureExpress(app: Application) {
+export async function configureExpress(app: Application) {
     
     const routes = [UserController, PlotController, EventCultureController];
 
@@ -14,7 +14,7 @@ export function configureExpress(app: Application) {
     
     app.use(express.json());
     
-    useContainer(container);
+    useContainer(await container);
     
     useExpressServer(app, {
         controllers: routes

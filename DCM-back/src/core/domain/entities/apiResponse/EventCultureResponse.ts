@@ -3,6 +3,7 @@ import { Vegetable } from "../../../../core/domain/valueObjects/Vegetable";
 export interface EventCultureResponse {
     date: Date,
     note: string,
+    plotId: string,
     typeEventCulture?: string,
     machine?: string,
     bringType?: string,
