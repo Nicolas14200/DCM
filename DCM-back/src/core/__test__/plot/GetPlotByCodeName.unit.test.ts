@@ -1,28 +1,38 @@
-import 'reflect-metadata';
+import "reflect-metadata";
 import { Plot } from "../../domain/entities/plot/Plot";
 import { GetPlotByCodeName } from "../../usecase/plot/GetPlotByCodeName";
-import { InMemoryPlotRepository } from '../adapters/inMemory/InMemoryPlotRepository';
+import { InMemoryPlotRepository } from "../adapters/inMemory/InMemoryPlotRepository";
+import { PlotError } from "../../domain/models/errors/PlotError";
 
-describe('Unit - GetPlotByCodeName', () => {
-    let plotRepo : InMemoryPlotRepository;
-    let getPlotByCodeName: GetPlotByCodeName;
-    let plot: Plot;
-    beforeAll(async () => {
-        plotRepo = new InMemoryPlotRepository(new Map());
-        getPlotByCodeName = new GetPlotByCodeName(plotRepo);
-        plot = Plot.create({
-            name: "Parcelle 0001",
-            codeName: "code alpha romero bétasoid",
-            heigth: 10,
-            width: 5,
-            pebbles: 1,
-            ph: 1,
-            plank: 50,
-        })
-        await plotRepo.save(plot);
-    })
-    it("Should return a plot by is CodeName", async () => {
-        const plotByCodeName = await getPlotByCodeName.execute("code alpha romero bétasoid")
-        expect(plotByCodeName.props.name).toEqual("Parcelle 0001")
-    })
-})
+describe("Unit - GetPlotByCodeName", () => {
+  let plotRepo: InMemoryPlotRepository;
+  let getPlotByCodeName: GetPlotByCodeName;
+  let plot: Plot;
+
+  beforeAll(async () => {
+    plotRepo = new InMemoryPlotRepository(new Map());
+    getPlotByCodeName = new GetPlotByCodeName(plotRepo);
+    plot = Plot.create({
+      name: "Parcelle 0001",
+      codeName: "code alpha romero bétasoid",
+      heigth: 10,
+      width: 5,
+      pebbles: 1,
+      ph: 1,
+      plank: 50,
+    });
+    await plotRepo.save(plot);
+  });
+
+  it("Should return a plot by is CodeName", async () => {
+    const plotByCodeName = await getPlotByCodeName.execute(
+      "code alpha romero bétasoid"
+    );
+    expect(plotByCodeName.props.name).toEqual("Parcelle 0001");
+  });
+
+  it("Should return a error Get By Code Name Failed", async () => {
+    const result = getPlotByCodeName.execute("fake id");
+    expect(result).rejects.toThrow(PlotError.GetByCodeNameFailed);
+  });
+});

@@ -6,6 +6,7 @@ import { UserRepository } from "../../../core/domain/repositories/UserRepository
 import { PasswordGateway } from "../../../core/domain/gateways/PasswordGateway";
 import { Password } from "../../../core/domain/valueObjects/Password";
 import { Identity } from "../../../core/domain/valueObjects/Identitty";
+import { UserError } from "../../domain/models/errors/UserError";
 
 export interface UpdateUserProps {
     id: string;
@@ -26,7 +27,9 @@ export class UpdateUser implements Usecase<UpdateUserProps, User>{
         const user: User = await this.userRepository.getById(payload.id);
         const password = new Password(payload.password).value;
         const hash = await this.passwordGateway.encrypt(password);
-
+        if(!user){
+            throw new UserError.UpdateFailed("User not found");
+        }
         user.update({
             name: payload.name,
             password: hash,

@@ -1,5 +1,4 @@
 import { UpdateUserProps } from "@src/core/usecase/user/UpdateUser";
-import { UserError } from "../../../../core/domain/models/errors/UserError";
 import { User } from "../../../domain/entities/user/User";
 import { UserRepository } from "../../../domain/repositories/UserRepository";
 
@@ -7,14 +6,20 @@ export class InMemoryUserRepository implements UserRepository {
 
     constructor(readonly userMap: Map < string, User > ){
     }
-    update(payload: UpdateUserProps): Promise<void> {
-        throw new Error("Method not implemented.");
+    async update(payload: UpdateUserProps): Promise<void> {
+        const { id, ...updateData } = payload;
+        const userToUpdate = this.userMap.get(id);
+
+        if (!userToUpdate) {
+            return null;
+        }
+        return
     }
 
     async getById(id: string): Promise<User> {
             const user: User = this.userMap.get(id)
             if (!user) {
-                throw new UserError.GetByIdFailed("USER_NOT_FOUND")
+                return null;
               }
             return user;
     }
@@ -30,11 +35,11 @@ export class InMemoryUserRepository implements UserRepository {
                     return this.userMap.get(id);
                 }
             }
-            throw new UserError.GetByEmailFailed("USER_NOT_FOUND")
+            return null;
         }
 
-    async delete(id: string): Promise<void> {
-        this.userMap.delete(id);
+    async delete(id: string): Promise<boolean> {
+        return this.userMap.delete(id);
         }
     }
 

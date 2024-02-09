@@ -4,5 +4,6 @@ export interface EventCultureRepository {
     save(eventCulture: EventCulture): Promise<EventCulture>;
     getById(id: string) : Promise <EventCulture>;
     getEventCultureByPlotId(plotId: string): Promise <EventCulture[]>;
-    delete(id: string): void;
+    delete(id: string): Promise<boolean>;
+    update(eventCulture: EventCulture): Promise<EventCulture>;
 }

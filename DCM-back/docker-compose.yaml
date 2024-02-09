@@ -17,7 +17,7 @@ services:
       - my_network
 
   node:
-    image: nodejs
+    image: node
     container_name: DCM-server
     networks:
       - my_network
@@ -25,7 +25,7 @@ services:
       - "3000:3000"
 
   mongodb:
-    image: mongo:6.0.13
+    image: mongo
     container_name: DCM-db-mongo
     ports:
       - "8000:8000"

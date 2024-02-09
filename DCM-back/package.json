@@ -5,7 +5,8 @@
   "main": "main.ts",
   "scripts": {
     "start": "ts-node src/index.ts ",
-    "test": "npx jest --runInBand"
+    "test": "npx jest --runInBand", 
+    "build": "rm -r dist | true && tsc"
   },
   "author": "Heutte Nicolas",
   "license": "ISC",

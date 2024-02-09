@@ -6,22 +6,20 @@ import { PlotRepository } from "../../../core/domain/repositories/PlotRepository
 import { Identity } from "../../../core/domain/valueObjects/Identitty";
 
 @injectable()
-export class GetAllPlot implements Usecase<void, Plot[]>{
+export class GetAllPlot implements Usecase<void, Plot[]> {
+  constructor(
+    @inject(DCMIdentifiers.plotRepository)
+    private readonly _plotRepository: PlotRepository
+  ) {}
 
-    constructor(
-        @inject(DCMIdentifiers.plotRepository)
-        private readonly _plotRepository : PlotRepository
-        ){}
-        
-    execute(): Promise<Plot[]> {
-        return this._plotRepository.getAll();
-    }
-    
-    async canExecute(identity: Identity): Promise<boolean> {
-        if (identity.role === "ADMIN" || identity.role === "PROLO" ) {
-            return true;
-        }
-        return false;
-    }
+  execute(): Promise<Plot[]> {
+    return this._plotRepository.getAll();
+  }
 
+  async canExecute(identity: Identity): Promise<boolean> {
+    if (identity.role === "ADMIN" || identity.role === "PROLO") {
+      return true;
+    }
+    return false;
+  }
 }

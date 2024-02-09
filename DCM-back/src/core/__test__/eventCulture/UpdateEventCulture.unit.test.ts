@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { EventCulture } from "../../domain/entities/eventCulture/EventCulture";
 import { InMemoryEventCultureRepository } from "../adapters/inMemory/InMemoryEventCultureRepository";
 import { UpdateEventCulture } from "../../usecase/eventCulture/UpdateEventCulture"
+import { EventCultureError } from '../../domain/models/errors/EventCultureError';
 
 describe('Unit - UpdateEventCulture', () => {
     let eventCultureRepo: InMemoryEventCultureRepository;
@@ -25,4 +26,11 @@ describe('Unit - UpdateEventCulture', () => {
         const newUpdateEventCulture = await eventCultureRepo.getById(eventCulture.props.id);
         expect(newUpdateEventCulture.props.note).toEqual("NEW NOTE")
     })
+
+    it("Should return a error if updaite failed", async () => {
+        const result = updateEventCulture.execute({
+            id: "FAKE_ID",
+            });
+        expect(result).rejects.toThrow(EventCultureError.GetByIdFailed);
+      });
 })

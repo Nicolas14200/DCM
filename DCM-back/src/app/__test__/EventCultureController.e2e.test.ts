@@ -17,7 +17,7 @@ import { UpdateEventCulture } from '../../core/usecase/eventCulture/UpdateEventC
 
 const app = express();
 
-const container = configureExpress(app);
+const container = await configureExpress(app);
 
 describe("e2e - EventCultureController", () => {
     let plotRepo: MongoDbPlotRepository;
@@ -26,7 +26,7 @@ describe("e2e - EventCultureController", () => {
     let plot : Plot;
     beforeAll(async () => {
         await mongoose.connect(`mongodb://127.0.0.1:27017/DCM`);
-        plotRepo = container.get(DCMIdentifiers.plotRepository);
+        plotRepo = await container.get(DCMIdentifiers.plotRepository);
         eventCultureRepo = container.get(DCMIdentifiers.eventCultureRepository);
 
         plot = Plot.create({

@@ -3,17 +3,16 @@ import { EventCultureRepository } from "../../../core/domain/repositories/EventC
 import { MongoDbEventCultureMapper, MongoDbEventCultureMapperProps } from "./mappers/MongoDbEventCultureMapper";
 import { eventCultureModel } from "./models/EventCultureModel";
 import { EventCulture } from "../../../core/domain/entities/eventCulture/EventCulture";
-import { EventCultureError } from "../../../core/domain/models/errors/EventCultureError";
 import { injectable } from "inversify";
 
 @injectable()
 export class MongoDbEventCultureRepository implements EventCultureRepository {
 
-
     private mongoDbEventCultureMapper: MongoDbEventCultureMapper = new MongoDbEventCultureMapper()
     
-    async delete(id: string): Promise<void> {
+    async delete(id: string): Promise<boolean> {
         await eventCultureModel.findOneAndDelete({id});
+        return true;
     }
 
     async getEventCultureByPlotId(plotId: string): Promise<EventCulture[]> {
@@ -64,6 +63,10 @@ export class MongoDbEventCultureRepository implements EventCultureRepository {
         if (result){
             return this.mongoDbEventCultureMapper.toDomain(result);
         }
-        throw new EventCultureError.GetByIdFailed("EVENT_CULTURE_NOT_FOUND")
+        return null
+    }
+
+    update(eventCulture: EventCulture): Promise<EventCulture> {
+        return null
     }
 }

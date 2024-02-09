@@ -27,12 +27,12 @@ export class SignIn implements Usecase<SignInProps, User> {
         payload.password,
         user.props.password
       );
-      
+
       if (passwordCheck) {
         return user;
-      }  
+      }
     } catch (e) {
-        throw new AuthenticationError.SignInFailed("SIGNIN_FAILED");
+      throw new AuthenticationError.SignInFailed("SIGNIN_FAILED");
     }
   }
 }
