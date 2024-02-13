@@ -38,10 +38,6 @@ db-reset:
 db-delete:
 	docker exec -it DCM-db-mysql sh -c "mysql -h 127.0.0.1 -P 3306 -u root -proot -Nse 'show tables from DCM' | xargs -I {} sh -c 'echo Deleting {} ...;mysql --host 127.0.0.1 --port 3306 -u root -proot -e \"TRUNCATE TABLE DCM.{}\"'"; \";
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 12c6e7d (fix: test)
 .PHONY : display-port
 display-port:
 	sudo lsof -i :3306
