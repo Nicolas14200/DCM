@@ -122,6 +122,7 @@ let EventCultureController = class EventCultureController {
         }
     }
 };
+exports.EventCultureController = EventCultureController;
 __decorate([
     (0, routing_controllers_1.Post)("/create"),
     __param(0, (0, routing_controllers_1.Res)()),
@@ -162,7 +163,7 @@ __decorate([
     __metadata("design:paramtypes", [Object, UpdateEventCultureCommand_1.UpdateEventCultureCommand]),
     __metadata("design:returntype", Promise)
 ], EventCultureController.prototype, "updateEventCulture", null);
-EventCultureController = __decorate([
+exports.EventCultureController = EventCultureController = __decorate([
     (0, routing_controllers_1.JsonController)("/event"),
     (0, inversify_1.injectable)(),
     __metadata("design:paramtypes", [CreateEventCulture_1.CreateEventCulture,
@@ -171,4 +172,3 @@ EventCultureController = __decorate([
         DeleteEventCulture_1.DeleteEventCulture,
         UpdateEventCulture_1.UpdateEventCulture])
 ], EventCultureController);
-exports.EventCultureController = EventCultureController;

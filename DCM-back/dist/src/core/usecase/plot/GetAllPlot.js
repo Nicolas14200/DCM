@@ -30,9 +30,9 @@ let GetAllPlot = class GetAllPlot {
         return false;
     }
 };
-GetAllPlot = __decorate([
+exports.GetAllPlot = GetAllPlot;
+exports.GetAllPlot = GetAllPlot = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.plotRepository)),
     __metadata("design:paramtypes", [Object])
 ], GetAllPlot);
-exports.GetAllPlot = GetAllPlot;

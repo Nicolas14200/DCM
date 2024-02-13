@@ -30,9 +30,9 @@ let MailJetGateway = class MailJetGateway {
         });
     }
 };
-MailJetGateway = __decorate([
+exports.MailJetGateway = MailJetGateway;
+exports.MailJetGateway = MailJetGateway = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.mailjet)),
     __metadata("design:paramtypes", [node_mailjet_1.default])
 ], MailJetGateway);
-exports.MailJetGateway = MailJetGateway;

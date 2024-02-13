@@ -258,8 +258,9 @@ export class MysqlPlotRepository implements PlotRepository {
     }
     
 
-    async delete(id: string): Promise<void> {
+    async delete(id: string): Promise<boolean> {
         await this.connect.promise().query<RowDataPacket[]>('DELETE FROM plot WHERE id = ?', [id]);
+        return true;
     }
 
     update(plot: Plot): Promise<Plot> {

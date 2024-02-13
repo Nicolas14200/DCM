@@ -166,6 +166,7 @@ let PlotController = class PlotController {
         }
     }
 };
+exports.PlotController = PlotController;
 __decorate([
     (0, routing_controllers_1.Get)("/"),
     __param(0, (0, routing_controllers_1.Req)()),
@@ -237,7 +238,7 @@ __decorate([
     __metadata("design:paramtypes", [Object, GetPlotByCodeNameCommand_1.GetPlotByCodeNameCommand]),
     __metadata("design:returntype", Promise)
 ], PlotController.prototype, "getPlotByCodeName", null);
-PlotController = __decorate([
+exports.PlotController = PlotController = __decorate([
     (0, routing_controllers_1.JsonController)("/plot"),
     (0, inversify_1.injectable)(),
     __param(6, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.plotRepository)),
@@ -251,4 +252,3 @@ PlotController = __decorate([
         GetAllPlot_1.GetAllPlot,
         GetPlotByCodeName_1.GetPlotByCodeName])
 ], PlotController);
-exports.PlotController = PlotController;

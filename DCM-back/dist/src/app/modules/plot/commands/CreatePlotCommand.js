@@ -20,6 +20,7 @@ class CreatePlotCommand {
     pebbles;
     plank;
 }
+exports.CreatePlotCommand = CreatePlotCommand;
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
@@ -48,4 +49,3 @@ __decorate([
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
 ], CreatePlotCommand.prototype, "plank", void 0);
-exports.CreatePlotCommand = CreatePlotCommand;

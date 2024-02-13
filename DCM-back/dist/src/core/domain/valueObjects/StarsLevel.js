@@ -6,4 +6,4 @@ var StarsLevel;
     StarsLevel[StarsLevel["one"] = 1] = "one";
     StarsLevel[StarsLevel["two"] = 2] = "two";
     StarsLevel[StarsLevel["three"] = 3] = "three";
-})(StarsLevel = exports.StarsLevel || (exports.StarsLevel = {}));
+})(StarsLevel || (exports.StarsLevel = StarsLevel = {}));

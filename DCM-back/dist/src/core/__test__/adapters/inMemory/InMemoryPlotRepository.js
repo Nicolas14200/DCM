@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InMemoryPlotRepository = void 0;
-const PlotError_1 = require("../../../../core/domain/models/errors/PlotError");
 class InMemoryPlotRepository {
     plotMap;
     constructor(plotMap) {
@@ -14,7 +13,7 @@ class InMemoryPlotRepository {
     async getById(id) {
         const plot = this.plotMap.get(id);
         if (!plot) {
-            throw new PlotError_1.PlotError.GetByIdFailed("PLOT_NOT_FOUND");
+            return null;
         }
         return this.plotMap.get(id);
     }
@@ -25,7 +24,7 @@ class InMemoryPlotRepository {
     async update(plot) {
         const plotExist = this.plotMap.set(plot.props.id, plot);
         if (!plotExist) {
-            throw new PlotError_1.PlotError.PlotExist("PLOT_NOT_FOUND");
+            return null;
         }
         return this.plotMap.get(plot.props.id);
     }
@@ -35,11 +34,10 @@ class InMemoryPlotRepository {
                 return this.plotMap.get(id);
             }
         }
-        throw new PlotError_1.PlotError.GetByCodeNameFailed("PLOT_NOT_FOUND");
+        return null;
     }
     async delete(id) {
-        this.plotMap.delete(id);
-        return;
+        return this.plotMap.delete(id);
     }
 }
 exports.InMemoryPlotRepository = InMemoryPlotRepository;

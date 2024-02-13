@@ -18,6 +18,7 @@ class CreateUserCommand {
     name;
     role;
 }
+exports.CreateUserCommand = CreateUserCommand;
 __decorate([
     (0, class_validator_1.IsEmail)(),
     __metadata("design:type", String)
@@ -34,4 +35,3 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateUserCommand.prototype, "role", void 0);
-exports.CreateUserCommand = CreateUserCommand;

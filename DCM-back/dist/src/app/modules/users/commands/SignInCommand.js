@@ -15,6 +15,7 @@ class SignInCommand {
     email;
     password;
 }
+exports.SignInCommand = SignInCommand;
 __decorate([
     (0, class_validator_1.IsEmail)(),
     __metadata("design:type", String)
@@ -23,4 +24,3 @@ __decorate([
     (0, class_validator_1.Length)(8, 30),
     __metadata("design:type", String)
 ], SignInCommand.prototype, "password", void 0);
-exports.SignInCommand = SignInCommand;

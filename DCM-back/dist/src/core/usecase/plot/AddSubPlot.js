@@ -32,9 +32,9 @@ let AddSubPlot = class AddSubPlot {
         return false;
     }
 };
-AddSubPlot = __decorate([
+exports.AddSubPlot = AddSubPlot;
+exports.AddSubPlot = AddSubPlot = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.plotRepository)),
     __metadata("design:paramtypes", [Object])
 ], AddSubPlot);
-exports.AddSubPlot = AddSubPlot;

@@ -175,6 +175,7 @@ let UserController = class UserController {
         }
     }
 };
+exports.UserController = UserController;
 __decorate([
     (0, routing_controllers_1.Get)("/"),
     __param(0, (0, routing_controllers_1.Res)()),
@@ -241,7 +242,7 @@ __decorate([
     __metadata("design:paramtypes", [DeleteUserCommand_1.DeleteUserCommand, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "deleteUser", null);
-UserController = __decorate([
+exports.UserController = UserController = __decorate([
     (0, routing_controllers_1.JsonController)("/user"),
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.identityGateway)),
@@ -253,4 +254,3 @@ UserController = __decorate([
         GeneratePasswordRecovery_1.GeneratePasswordRecovery,
         ResetPassword_1.ResetPassword])
 ], UserController);
-exports.UserController = UserController;

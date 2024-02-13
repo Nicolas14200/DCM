@@ -4,6 +4,7 @@ import { inject, injectable } from "inversify";
 import { DCMIdentifiers } from "../DCMIdentifiers";
 import { PlotRepository } from "../../domain/repositories/PlotRepository";
 import { Series } from "../../../core/domain/valueObjects/Series";
+import { PlotError } from "../../domain/models/errors/PlotError";
 
 
 export interface AddSeriesProps {
@@ -22,8 +23,11 @@ export class AddSeriesToPlot implements Usecase<AddSeriesProps, void>{
 
     async execute(addSeriesProps: AddSeriesProps): Promise<void> {
         const plot = await this._plotRepository.getById(addSeriesProps.plotId);
+        if(!plot){
+            throw new PlotError.GetByIdFailed("PLOT_NOT_FOUND")
+        }
         plot.addSeries(addSeriesProps.series);
-        await this._plotRepository.save(plot);
+        await this._plotRepository.update(plot);
     }
 
     async canExecute(identity: Identity): Promise<boolean> {

@@ -35,9 +35,9 @@ let AuthenticationMiddleware = class AuthenticationMiddleware {
         }
     }
 };
-AuthenticationMiddleware = __decorate([
+exports.AuthenticationMiddleware = AuthenticationMiddleware;
+exports.AuthenticationMiddleware = AuthenticationMiddleware = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.identityGateway)),
     __metadata("design:paramtypes", [Object])
 ], AuthenticationMiddleware);
-exports.AuthenticationMiddleware = AuthenticationMiddleware;

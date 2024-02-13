@@ -13,4 +13,4 @@ var AuthenticationError;
     class ResetPasswordFailed extends DomainError_1.DomainError {
     }
     AuthenticationError.ResetPasswordFailed = ResetPasswordFailed;
-})(AuthenticationError = exports.AuthenticationError || (exports.AuthenticationError = {}));
+})(AuthenticationError || (exports.AuthenticationError = AuthenticationError = {}));

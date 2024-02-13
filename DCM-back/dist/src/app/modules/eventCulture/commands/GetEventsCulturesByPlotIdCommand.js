@@ -14,8 +14,8 @@ const class_validator_1 = require("class-validator");
 class GetEventsCulturesByPlotIdCommand {
     plotId;
 }
+exports.GetEventsCulturesByPlotIdCommand = GetEventsCulturesByPlotIdCommand;
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], GetEventsCulturesByPlotIdCommand.prototype, "plotId", void 0);
-exports.GetEventsCulturesByPlotIdCommand = GetEventsCulturesByPlotIdCommand;

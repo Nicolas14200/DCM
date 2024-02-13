@@ -15,9 +15,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateEventCulture = exports.UpdateEventCultureProps = void 0;
 const inversify_1 = require("inversify");
 const DCMIdentifiers_1 = require("../DCMIdentifiers");
+const EventCultureError_1 = require("../../domain/models/errors/EventCultureError");
 class UpdateEventCultureProps {
     id;
     note;
+    typeEventCulture;
+    machine;
+    bringType;
+    quantity;
+    vegetable;
+    method;
+    nbHuman;
+    nbHours;
+    succes;
+    disease;
+    bug;
 }
 exports.UpdateEventCultureProps = UpdateEventCultureProps;
 let UpdateEventCulture = class UpdateEventCulture {
@@ -27,8 +39,11 @@ let UpdateEventCulture = class UpdateEventCulture {
     }
     async execute(payload) {
         const eventCulture = await this._eventCultureRepository.getById(payload.id);
+        if (!eventCulture) {
+            throw new EventCultureError_1.EventCultureError.GetByIdFailed('Get By Id Failed');
+        }
         eventCulture.update({
-            note: payload.note
+            ...payload
         });
         await this._eventCultureRepository.save(eventCulture);
         return eventCulture;
@@ -40,9 +55,9 @@ let UpdateEventCulture = class UpdateEventCulture {
         return false;
     }
 };
-UpdateEventCulture = __decorate([
+exports.UpdateEventCulture = UpdateEventCulture;
+exports.UpdateEventCulture = UpdateEventCulture = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.eventCultureRepository)),
     __metadata("design:paramtypes", [Object])
 ], UpdateEventCulture);
-exports.UpdateEventCulture = UpdateEventCulture;

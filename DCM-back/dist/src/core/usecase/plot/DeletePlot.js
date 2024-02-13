@@ -15,14 +15,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeletePlot = void 0;
 const inversify_1 = require("inversify");
 const DCMIdentifiers_1 = require("../DCMIdentifiers");
+const PlotError_1 = require("../../domain/models/errors/PlotError");
 let DeletePlot = class DeletePlot {
     _plotRepository;
     constructor(_plotRepository) {
         this._plotRepository = _plotRepository;
     }
     async execute(id) {
-        await this._plotRepository.delete(id);
-        return;
+        const isDelete = await this._plotRepository.delete(id);
+        if (!isDelete) {
+            throw new PlotError_1.PlotError.PlotDeleteFailed("Delete failed");
+        }
+        return isDelete;
     }
     async canExecute(identity) {
         if (identity.role === "ADMIN" || identity.role === "PROLO") {
@@ -31,9 +35,9 @@ let DeletePlot = class DeletePlot {
         return false;
     }
 };
-DeletePlot = __decorate([
+exports.DeletePlot = DeletePlot;
+exports.DeletePlot = DeletePlot = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.plotRepository)),
     __metadata("design:paramtypes", [Object])
 ], DeletePlot);
-exports.DeletePlot = DeletePlot;

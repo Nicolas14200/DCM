@@ -14,8 +14,8 @@ const class_validator_1 = require("class-validator");
 class GetPlotByCodeNameCommand {
     codeName;
 }
+exports.GetPlotByCodeNameCommand = GetPlotByCodeNameCommand;
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], GetPlotByCodeNameCommand.prototype, "codeName", void 0);
-exports.GetPlotByCodeNameCommand = GetPlotByCodeNameCommand;

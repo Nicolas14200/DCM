@@ -7,7 +7,7 @@ exports.createDb = void 0;
 const mysql2_1 = __importDefault(require("mysql2"));
 const createDb = async () => {
     const access = {
-        host: '127.0.0.1',
+        host: 'mysql',
         user: 'root',
         password: 'root',
         database: 'DCM',

@@ -6,4 +6,4 @@ var BringType;
     BringType["manure"] = "manure";
     BringType["limstone"] = "limstone";
     BringType["compost"] = "compost";
-})(BringType = exports.BringType || (exports.BringType = {}));
+})(BringType || (exports.BringType = BringType = {}));

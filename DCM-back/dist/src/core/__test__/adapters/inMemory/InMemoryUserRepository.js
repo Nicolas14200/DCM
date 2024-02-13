@@ -1,19 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InMemoryUserRepository = void 0;
-const UserError_1 = require("../../../../core/domain/models/errors/UserError");
 class InMemoryUserRepository {
     userMap;
     constructor(userMap) {
         this.userMap = userMap;
     }
-    update(payload) {
-        throw new Error("Method not implemented.");
+    async update(payload) {
+        const { id, ...updateData } = payload;
+        const userToUpdate = this.userMap.get(id);
+        if (!userToUpdate) {
+            return null;
+        }
+        return;
     }
     async getById(id) {
         const user = this.userMap.get(id);
         if (!user) {
-            throw new UserError_1.UserError.GetByIdFailed("USER_NOT_FOUND");
+            return null;
         }
         return user;
     }
@@ -27,10 +31,10 @@ class InMemoryUserRepository {
                 return this.userMap.get(id);
             }
         }
-        throw new UserError_1.UserError.GetByEmailFailed("USER_NOT_FOUND");
+        return null;
     }
     async delete(id) {
-        this.userMap.delete(id);
+        return this.userMap.delete(id);
     }
 }
 exports.InMemoryUserRepository = InMemoryUserRepository;

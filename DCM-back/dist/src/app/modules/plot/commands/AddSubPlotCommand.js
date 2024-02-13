@@ -15,6 +15,7 @@ class AddSubPlotCommand {
     currentId;
     plotIdToAdd;
 }
+exports.AddSubPlotCommand = AddSubPlotCommand;
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
@@ -23,4 +24,3 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], AddSubPlotCommand.prototype, "plotIdToAdd", void 0);
-exports.AddSubPlotCommand = AddSubPlotCommand;

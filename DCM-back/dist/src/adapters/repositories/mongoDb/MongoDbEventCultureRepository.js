@@ -10,12 +10,12 @@ exports.MongoDbEventCultureRepository = void 0;
 require("reflect-metadata");
 const MongoDbEventCultureMapper_1 = require("./mappers/MongoDbEventCultureMapper");
 const EventCultureModel_1 = require("./models/EventCultureModel");
-const EventCultureError_1 = require("../../../core/domain/models/errors/EventCultureError");
 const inversify_1 = require("inversify");
 let MongoDbEventCultureRepository = class MongoDbEventCultureRepository {
     mongoDbEventCultureMapper = new MongoDbEventCultureMapper_1.MongoDbEventCultureMapper();
     async delete(id) {
         await EventCultureModel_1.eventCultureModel.findOneAndDelete({ id });
+        return true;
     }
     async getEventCultureByPlotId(plotId) {
         const results = await EventCultureModel_1.eventCultureModel.find({
@@ -57,10 +57,13 @@ let MongoDbEventCultureRepository = class MongoDbEventCultureRepository {
         if (result) {
             return this.mongoDbEventCultureMapper.toDomain(result);
         }
-        throw new EventCultureError_1.EventCultureError.GetByIdFailed("EVENT_CULTURE_NOT_FOUND");
+        return null;
+    }
+    update(eventCulture) {
+        return null;
     }
 };
-MongoDbEventCultureRepository = __decorate([
+exports.MongoDbEventCultureRepository = MongoDbEventCultureRepository;
+exports.MongoDbEventCultureRepository = MongoDbEventCultureRepository = __decorate([
     (0, inversify_1.injectable)()
 ], MongoDbEventCultureRepository);
-exports.MongoDbEventCultureRepository = MongoDbEventCultureRepository;

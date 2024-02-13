@@ -14,8 +14,8 @@ const class_validator_1 = require("class-validator");
 class GetEventsCulturesByIdCommand {
     id;
 }
+exports.GetEventsCulturesByIdCommand = GetEventsCulturesByIdCommand;
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], GetEventsCulturesByIdCommand.prototype, "id", void 0);
-exports.GetEventsCulturesByIdCommand = GetEventsCulturesByIdCommand;

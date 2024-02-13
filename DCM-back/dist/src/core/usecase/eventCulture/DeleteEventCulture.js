@@ -15,13 +15,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeleteEventCulture = void 0;
 const DCMIdentifiers_1 = require("../DCMIdentifiers");
 const inversify_1 = require("inversify");
+const EventCultureError_1 = require("../../domain/models/errors/EventCultureError");
 let DeleteEventCulture = class DeleteEventCulture {
     _eventCultureRepository;
     constructor(_eventCultureRepository) {
         this._eventCultureRepository = _eventCultureRepository;
     }
     async execute(id) {
-        await this._eventCultureRepository.delete(id);
+        const isDelete = await this._eventCultureRepository.delete(id);
+        if (!isDelete) {
+            throw new EventCultureError_1.EventCultureError.DeletedEventCultureFailed("Deleted EventCulture Failed");
+        }
+        return isDelete;
     }
     async canExecute(identity) {
         if (identity.role === "ADMIN" || identity.role === "PROLO") {
@@ -30,9 +35,9 @@ let DeleteEventCulture = class DeleteEventCulture {
         return false;
     }
 };
-DeleteEventCulture = __decorate([
+exports.DeleteEventCulture = DeleteEventCulture;
+exports.DeleteEventCulture = DeleteEventCulture = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.eventCultureRepository)),
     __metadata("design:paramtypes", [Object])
 ], DeleteEventCulture);
-exports.DeleteEventCulture = DeleteEventCulture;

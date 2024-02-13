@@ -76,8 +76,8 @@ let MysqlUserRepository = class MysqlUserRepository {
         }
     }
 };
-MysqlUserRepository = __decorate([
+exports.MysqlUserRepository = MysqlUserRepository;
+exports.MysqlUserRepository = MysqlUserRepository = __decorate([
     (0, inversify_1.injectable)(),
     __metadata("design:paramtypes", [Object])
 ], MysqlUserRepository);
-exports.MysqlUserRepository = MysqlUserRepository;

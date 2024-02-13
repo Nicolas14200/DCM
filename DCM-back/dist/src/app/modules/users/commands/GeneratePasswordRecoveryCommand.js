@@ -14,8 +14,8 @@ const class_validator_1 = require("class-validator");
 class GeneratePasswordRecoveryCommand {
     email;
 }
+exports.GeneratePasswordRecoveryCommand = GeneratePasswordRecoveryCommand;
 __decorate([
     (0, class_validator_1.IsEmail)(),
     __metadata("design:type", String)
 ], GeneratePasswordRecoveryCommand.prototype, "email", void 0);
-exports.GeneratePasswordRecoveryCommand = GeneratePasswordRecoveryCommand;

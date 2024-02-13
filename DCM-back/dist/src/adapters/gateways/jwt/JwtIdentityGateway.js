@@ -31,8 +31,8 @@ let JwtIdentityGateway = class JwtIdentityGateway {
         };
     }
 };
-JwtIdentityGateway = __decorate([
+exports.JwtIdentityGateway = JwtIdentityGateway;
+exports.JwtIdentityGateway = JwtIdentityGateway = __decorate([
     (0, inversify_1.injectable)(),
     __metadata("design:paramtypes", [String])
 ], JwtIdentityGateway);
-exports.JwtIdentityGateway = JwtIdentityGateway;

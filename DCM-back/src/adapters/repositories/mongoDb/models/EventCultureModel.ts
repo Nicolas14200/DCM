@@ -58,4 +58,4 @@ export const eventCultureShema = new mongoose.Schema({
         type: String
     }
 })
-export const eventCultureModel = mongoose.model("eventCultures", eventCultureShema)
+export const EventCultureModel = mongoose.model("eventCultures", eventCultureShema)

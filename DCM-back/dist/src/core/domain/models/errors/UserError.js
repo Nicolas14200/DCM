@@ -16,4 +16,10 @@ var UserError;
     class MissingInformation extends DomainError_1.DomainError {
     }
     UserError.MissingInformation = MissingInformation;
-})(UserError = exports.UserError || (exports.UserError = {}));
+    class UpdateFailed extends DomainError_1.DomainError {
+    }
+    UserError.UpdateFailed = UpdateFailed;
+    class DeleteUserFailed extends DomainError_1.DomainError {
+    }
+    UserError.DeleteUserFailed = DeleteUserFailed;
+})(UserError || (exports.UserError = UserError = {}));

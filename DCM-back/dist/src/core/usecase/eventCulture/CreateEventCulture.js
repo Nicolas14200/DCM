@@ -16,19 +16,28 @@ exports.CreateEventCulture = void 0;
 const EventCulture_1 = require("../../../core/domain/entities/eventCulture/EventCulture");
 const inversify_1 = require("inversify");
 const DCMIdentifiers_1 = require("../DCMIdentifiers");
+const PlotError_1 = require("../../domain/models/errors/PlotError");
+const AddEventCulture_1 = require("../plot/AddEventCulture");
 let CreateEventCulture = class CreateEventCulture {
     _eventCultureRepository;
     _plotRepository;
-    constructor(_eventCultureRepository, _plotRepository) {
+    _addEventCulture;
+    constructor(_eventCultureRepository, _plotRepository, _addEventCulture) {
         this._eventCultureRepository = _eventCultureRepository;
         this._plotRepository = _plotRepository;
+        this._addEventCulture = _addEventCulture;
     }
     async execute(payload) {
         const eventCulture = EventCulture_1.EventCulture.create(payload);
         await this._eventCultureRepository.save(eventCulture);
         const plot = await this._plotRepository.getById(payload.plotId);
-        plot.addEventCulture(eventCulture.props.id);
-        await this._plotRepository.save(plot);
+        if (!plot) {
+            throw new PlotError_1.PlotError.GetByIdFailed("Plot not found");
+        }
+        await this._addEventCulture.execute({
+            eventCultureId: eventCulture.props.id,
+            plotId: plot.props.id,
+        });
         return eventCulture;
     }
     async canExecute(identity) {
@@ -38,10 +47,10 @@ let CreateEventCulture = class CreateEventCulture {
         return false;
     }
 };
-CreateEventCulture = __decorate([
+exports.CreateEventCulture = CreateEventCulture;
+exports.CreateEventCulture = CreateEventCulture = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.eventCultureRepository)),
     __param(1, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.plotRepository)),
-    __metadata("design:paramtypes", [Object, Object])
+    __metadata("design:paramtypes", [Object, Object, AddEventCulture_1.AddEventCulture])
 ], CreateEventCulture);
-exports.CreateEventCulture = CreateEventCulture;

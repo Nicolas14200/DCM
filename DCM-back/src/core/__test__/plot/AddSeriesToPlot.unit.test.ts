@@ -27,13 +27,13 @@ describe("Unit - AddSeriesToPlot", () => {
       vegetableVariety: "CARROTE",
     };
     await plotRepo.save(plot);
+  });
+
+  it("Should Add a series to a plot", async () => {
     await addSeriesToPlot.execute({
       plotId: plot.props.id,
       series: series,
     });
-  });
-  
-  it("Should Add a series to a plot", async () => {
     const newPlot = await plotRepo.getById(plot.props.id);
     expect(newPlot.props.series[0].vegetableVariety).toEqual("CARROTE");
   });

@@ -15,13 +15,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetEventsCulturesByPlotId = void 0;
 const DCMIdentifiers_1 = require("../DCMIdentifiers");
 const inversify_1 = require("inversify");
+const EventCultureError_1 = require("../../domain/models/errors/EventCultureError");
 let GetEventsCulturesByPlotId = class GetEventsCulturesByPlotId {
     _eventCultureRepository;
     constructor(_eventCultureRepository) {
         this._eventCultureRepository = _eventCultureRepository;
     }
     async execute(plotId) {
-        const eventCultureByPloyId = this._eventCultureRepository.getEventCultureByPlotId(plotId);
+        const eventCultureByPloyId = await this._eventCultureRepository.getEventCultureByPlotId(plotId);
+        if (eventCultureByPloyId.length === 0) {
+            throw new EventCultureError_1.EventCultureError.NoEventCulture("No EventCulture");
+        }
         return eventCultureByPloyId;
     }
     async canExecute(identity) {
@@ -31,9 +35,9 @@ let GetEventsCulturesByPlotId = class GetEventsCulturesByPlotId {
         return false;
     }
 };
-GetEventsCulturesByPlotId = __decorate([
+exports.GetEventsCulturesByPlotId = GetEventsCulturesByPlotId;
+exports.GetEventsCulturesByPlotId = GetEventsCulturesByPlotId = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.eventCultureRepository)),
     __metadata("design:paramtypes", [Object])
 ], GetEventsCulturesByPlotId);
-exports.GetEventsCulturesByPlotId = GetEventsCulturesByPlotId;

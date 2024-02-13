@@ -4,4 +4,4 @@ exports.Machine = void 0;
 var Machine;
 (function (Machine) {
     Machine["TRACTEUR"] = "tracteur";
-})(Machine = exports.Machine || (exports.Machine = {}));
+})(Machine || (exports.Machine = Machine = {}));

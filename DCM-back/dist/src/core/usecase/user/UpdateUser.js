@@ -16,6 +16,7 @@ exports.UpdateUser = void 0;
 const inversify_1 = require("inversify");
 const DCMIdentifiers_1 = require("../DCMIdentifiers");
 const Password_1 = require("../../../core/domain/valueObjects/Password");
+const UserError_1 = require("../../domain/models/errors/UserError");
 let UpdateUser = class UpdateUser {
     userRepository;
     passwordGateway;
@@ -27,6 +28,9 @@ let UpdateUser = class UpdateUser {
         const user = await this.userRepository.getById(payload.id);
         const password = new Password_1.Password(payload.password).value;
         const hash = await this.passwordGateway.encrypt(password);
+        if (!user) {
+            throw new UserError_1.UserError.UpdateFailed("User not found");
+        }
         user.update({
             name: payload.name,
             password: hash,
@@ -48,10 +52,10 @@ let UpdateUser = class UpdateUser {
         return false;
     }
 };
-UpdateUser = __decorate([
+exports.UpdateUser = UpdateUser;
+exports.UpdateUser = UpdateUser = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.userRepository)),
     __param(1, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.passwordGateway)),
     __metadata("design:paramtypes", [Object, Object])
 ], UpdateUser);
-exports.UpdateUser = UpdateUser;

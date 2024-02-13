@@ -15,13 +15,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetUserById = void 0;
 const inversify_1 = require("inversify");
 const DCMIdentifiers_1 = require("../DCMIdentifiers");
+const UserError_1 = require("../../domain/models/errors/UserError");
 let GetUserById = class GetUserById {
     userRepository;
     constructor(userRepository) {
         this.userRepository = userRepository;
     }
     async execute(id) {
-        return await this.userRepository.getById(id);
+        const user = await this.userRepository.getById(id);
+        if (!user) {
+            throw new UserError_1.UserError.GetByIdFailed("Get by id failed");
+        }
+        return user;
     }
     async canExecute(identity) {
         if (identity.role === "ADMIN" || identity.role === "PROLO") {
@@ -30,9 +35,9 @@ let GetUserById = class GetUserById {
         return false;
     }
 };
-GetUserById = __decorate([
+exports.GetUserById = GetUserById;
+exports.GetUserById = GetUserById = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.userRepository)),
     __metadata("design:paramtypes", [Object])
 ], GetUserById);
-exports.GetUserById = GetUserById;

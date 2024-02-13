@@ -15,13 +15,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeleteUser = void 0;
 const inversify_1 = require("inversify");
 const DCMIdentifiers_1 = require("../DCMIdentifiers");
+const UserError_1 = require("../../domain/models/errors/UserError");
 let DeleteUser = class DeleteUser {
     userRepository;
     constructor(userRepository) {
         this.userRepository = userRepository;
     }
     async execute(id) {
-        return await this.userRepository.delete(id);
+        const isDelete = await this.userRepository.delete(id);
+        if (!isDelete) {
+            throw new UserError_1.UserError.DeleteUserFailed('Delete user failed');
+        }
+        return isDelete;
     }
     async canExecute(identity) {
         if (identity.role === "ADMIN" || identity.role === "PROLO") {
@@ -30,9 +35,9 @@ let DeleteUser = class DeleteUser {
         return false;
     }
 };
-DeleteUser = __decorate([
+exports.DeleteUser = DeleteUser;
+exports.DeleteUser = DeleteUser = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.userRepository)),
     __metadata("design:paramtypes", [Object])
 ], DeleteUser);
-exports.DeleteUser = DeleteUser;

@@ -59,7 +59,7 @@ let MongoDbUserRepository = class MongoDbUserRepository {
         await UserModel_1.UserModel.findOneAndDelete({ id });
     }
 };
-MongoDbUserRepository = __decorate([
+exports.MongoDbUserRepository = MongoDbUserRepository;
+exports.MongoDbUserRepository = MongoDbUserRepository = __decorate([
     (0, inversify_1.injectable)()
 ], MongoDbUserRepository);
-exports.MongoDbUserRepository = MongoDbUserRepository;

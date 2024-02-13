@@ -10,4 +10,10 @@ var EventCultureError;
     class CreateeventCultureFailed extends DomainError_1.DomainError {
     }
     EventCultureError.CreateeventCultureFailed = CreateeventCultureFailed;
-})(EventCultureError = exports.EventCultureError || (exports.EventCultureError = {}));
+    class DeletedEventCultureFailed extends DomainError_1.DomainError {
+    }
+    EventCultureError.DeletedEventCultureFailed = DeletedEventCultureFailed;
+    class NoEventCulture extends DomainError_1.DomainError {
+    }
+    EventCultureError.NoEventCulture = NoEventCulture;
+})(EventCultureError || (exports.EventCultureError = EventCultureError = {}));

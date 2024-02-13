@@ -23,28 +23,21 @@ let CreatePlot = class CreatePlot {
         this._plotRepository = _plotRepository;
     }
     async execute(payload) {
-        try {
-            const plotExist = await this._plotRepository.getByCodeName(payload.codeName);
-            if (plotExist) {
-                throw new PlotError_1.PlotError.PlotExist("PLOT_EXIST");
-            }
+        const plotExist = await this._plotRepository.getByCodeName(payload.codeName);
+        if (plotExist) {
+            throw new PlotError_1.PlotError.PlotExist("PLOT_EXIST");
         }
-        catch (e) {
-            if (e.message === "PLOT_NOT_FOUND") {
-                const plot = Plot_1.Plot.create({
-                    name: payload.name,
-                    codeName: payload.codeName,
-                    width: payload.width,
-                    heigth: payload.heigth,
-                    ph: payload.ph,
-                    pebbles: payload.pebbles,
-                    plank: payload.plank,
-                });
-                await this._plotRepository.save(plot);
-                return plot;
-            }
-            throw e;
-        }
+        const plot = Plot_1.Plot.create({
+            name: payload.name,
+            codeName: payload.codeName,
+            width: payload.width,
+            heigth: payload.heigth,
+            ph: payload.ph,
+            pebbles: payload.pebbles,
+            plank: payload.plank,
+        });
+        await this._plotRepository.save(plot);
+        return plot;
     }
     async canExecute(identity) {
         if (identity.role === "ADMIN" || identity.role === "PROLO") {
@@ -53,9 +46,9 @@ let CreatePlot = class CreatePlot {
         return false;
     }
 };
-CreatePlot = __decorate([
+exports.CreatePlot = CreatePlot;
+exports.CreatePlot = CreatePlot = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.plotRepository)),
     __metadata("design:paramtypes", [Object])
 ], CreatePlot);
-exports.CreatePlot = CreatePlot;

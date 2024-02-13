@@ -10,9 +10,9 @@ services:
       MYSQL_DATABASE: DCM
     volumes:
       - mysql_data:/var/lib/mysql
-      - /home/nico/Bureau/DCM/DCM/DCM-back/src/adapters/repositories/mysql/models:/models
-      - /home/nico/Bureau/DCM/DCM/DCM-back/src/adapters/repositories/mysql/resets:/resets
-      - /home/nico/Bureau/DCM/DCM/DCM-back/src/adapters/repositories/mysql/seeds:/seeds
+      - ${PWD}/src/adapters/repositories/mysql/models/:/models
+      - ${PWD}/src/adapters/repositories/mysql/resets:/resets
+      - ${PWD}/src/adapters/repositories/mysql/seeds:/seeds
     networks:
       - my_network
 

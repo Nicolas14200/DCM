@@ -14,8 +14,8 @@ const class_validator_1 = require("class-validator");
 class DeleteUserCommand {
     id;
 }
+exports.DeleteUserCommand = DeleteUserCommand;
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], DeleteUserCommand.prototype, "id", void 0);
-exports.DeleteUserCommand = DeleteUserCommand;

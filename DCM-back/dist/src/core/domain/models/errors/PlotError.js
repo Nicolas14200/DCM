@@ -13,4 +13,7 @@ var PlotError;
     class PlotExist extends DomainError_1.DomainError {
     }
     PlotError.PlotExist = PlotExist;
-})(PlotError = exports.PlotError || (exports.PlotError = {}));
+    class PlotDeleteFailed extends DomainError_1.DomainError {
+    }
+    PlotError.PlotDeleteFailed = PlotDeleteFailed;
+})(PlotError || (exports.PlotError = PlotError = {}));

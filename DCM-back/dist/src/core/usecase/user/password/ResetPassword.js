@@ -36,10 +36,10 @@ let ResetPassword = class ResetPassword {
         return false;
     }
 };
-ResetPassword = __decorate([
+exports.ResetPassword = ResetPassword;
+exports.ResetPassword = ResetPassword = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.userRepository)),
     __param(1, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.passwordGateway)),
     __metadata("design:paramtypes", [Object, Object])
 ], ResetPassword);
-exports.ResetPassword = ResetPassword;

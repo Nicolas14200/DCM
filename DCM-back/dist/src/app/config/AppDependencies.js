@@ -8,6 +8,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const UserController_1 = require("../../app/modules/users/UserController");
 const BcryptPasswordGateway_1 = require("../../adapters/gateways/bcrypt/BcryptPasswordGateway");
+const MongoDbUserRepository_1 = require("../../adapters/repositories/mongoDb/MongoDbUserRepository");
 const DCMIdentifiers_1 = require("../../core/usecase/DCMIdentifiers");
 const CreateUser_1 = require("../../core/usecase/user/CreateUser");
 const inversify_1 = require("inversify");
@@ -17,10 +18,12 @@ const CreatePlot_1 = require("../../core/usecase/plot/CreatePlot");
 const GetUserById_1 = require("../../core/usecase/user/GetUserById");
 const DeleteUser_1 = require("../../core/usecase/user/DeleteUser");
 const UpdatePlot_1 = require("../../core/usecase/plot/UpdatePlot");
+const MongoDbPlotRepository_1 = require("../../adapters/repositories/mongoDb/MongoDbPlotRepository");
 const DeletePlot_1 = require("../../core/usecase/plot/DeletePlot");
 const GetPlotById_1 = require("../../core/usecase/plot/GetPlotById");
 const EventCultureController_1 = require("../../app/modules/eventCulture/EventCultureController");
 const CreateEventCulture_1 = require("../../core/usecase/eventCulture/CreateEventCulture");
+const MongoDbEventCultureRepository_1 = require("../../adapters/repositories/mongoDb/MongoDbEventCultureRepository");
 const GetEventsCulturesByPlotId_1 = require("../../core/usecase/eventCulture/GetEventsCulturesByPlotId");
 const GetEventCultureById_1 = require("../../core/usecase/eventCulture/GetEventCultureById");
 const DeleteEventCulture_1 = require("../../core/usecase/eventCulture/DeleteEventCulture");
@@ -40,16 +43,23 @@ const MysqlUserRepository_1 = require("../../adapters/repositories/mysql/MysqlUs
 const connectDb_1 = require("../../adapters/repositories/mysql/connectDb");
 const MysqlPlotRepository_1 = require("../../adapters/repositories/mysql/MysqlPlotRepository");
 const MysqlEventCultureRepository_1 = require("../../adapters/repositories/mysql/MysqlEventCultureRepository");
-const connect = (0, connectDb_1.createDb)();
+let connect;
+if (process.env.DB === "mysql") {
+    connect = (0, connectDb_1.createDb)();
+}
 class AppDependencies extends inversify_1.Container {
     async init() {
+        if (process.env.DB === "mongoDb") {
+            this.bind(DCMIdentifiers_1.DCMIdentifiers.userRepository).toConstantValue(new MongoDbUserRepository_1.MongoDbUserRepository());
+            this.bind(DCMIdentifiers_1.DCMIdentifiers.eventCultureRepository).toConstantValue(new MongoDbEventCultureRepository_1.MongoDbEventCultureRepository());
+            this.bind(DCMIdentifiers_1.DCMIdentifiers.plotRepository).toConstantValue(new MongoDbPlotRepository_1.MongoDbPlotRepository());
+        }
+        if (process.env.DB === "mysql") {
+            this.bind(DCMIdentifiers_1.DCMIdentifiers.userRepository).toConstantValue(new MysqlUserRepository_1.MysqlUserRepository(await connect));
+            this.bind(DCMIdentifiers_1.DCMIdentifiers.eventCultureRepository).toConstantValue(new MysqlEventCultureRepository_1.MysqlEventCultureRepository(await connect));
+            this.bind(DCMIdentifiers_1.DCMIdentifiers.plotRepository).toConstantValue(new MysqlPlotRepository_1.MysqlPlotRepository(await connect));
+        }
         this.bind(DCMIdentifiers_1.DCMIdentifiers.passwordGateway).toConstantValue(new BcryptPasswordGateway_1.BcryptPasswordGateway());
-        //this.bind(DCMIdentifiers.userRepository).toConstantValue(new MongoDbUserRepository())
-        this.bind(DCMIdentifiers_1.DCMIdentifiers.userRepository).toConstantValue(new MysqlUserRepository_1.MysqlUserRepository(await connect));
-        //this.bind(DCMIdentifiers.eventCultureRepository).toConstantValue(new MongoDbEventCultureRepository())
-        this.bind(DCMIdentifiers_1.DCMIdentifiers.eventCultureRepository).toConstantValue(new MysqlEventCultureRepository_1.MysqlEventCultureRepository(await connect));
-        //this.bind(DCMIdentifiers.plotRepository).toConstantValue(new MongoDbPlotRepository())
-        this.bind(DCMIdentifiers_1.DCMIdentifiers.plotRepository).toConstantValue(new MysqlPlotRepository_1.MysqlPlotRepository(await connect));
         this.bind(DCMIdentifiers_1.DCMIdentifiers.identityGateway).toConstantValue(new JwtIdentityGateway_1.JwtIdentityGateway(process.env.JWT_KEY));
         this.bind(DCMIdentifiers_1.DCMIdentifiers.emailGateway).toConstantValue(new MailJetGateway_1.MailJetGateway(new node_mailjet_1.default({
             apiKey: process.env.MJ_APIKEY_PUBLIC,

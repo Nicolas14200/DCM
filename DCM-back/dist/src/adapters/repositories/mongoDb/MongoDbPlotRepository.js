@@ -94,7 +94,7 @@ let MongoDbPlotRepository = class MongoDbPlotRepository {
         await PlotModel_1.PlotModel.findOneAndDelete({ id });
     }
 };
-MongoDbPlotRepository = __decorate([
+exports.MongoDbPlotRepository = MongoDbPlotRepository;
+exports.MongoDbPlotRepository = MongoDbPlotRepository = __decorate([
     (0, inversify_1.injectable)()
 ], MongoDbPlotRepository);
-exports.MongoDbPlotRepository = MongoDbPlotRepository;

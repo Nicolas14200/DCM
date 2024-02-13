@@ -15,13 +15,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetPlotById = void 0;
 const inversify_1 = require("inversify");
 const DCMIdentifiers_1 = require("../DCMIdentifiers");
+const PlotError_1 = require("../../domain/models/errors/PlotError");
 let GetPlotById = class GetPlotById {
     _plotRepository;
     constructor(_plotRepository) {
         this._plotRepository = _plotRepository;
     }
-    execute(id) {
-        return this._plotRepository.getById(id);
+    async execute(id) {
+        const plot = await this._plotRepository.getById(id);
+        if (!plot) {
+            throw new PlotError_1.PlotError.GetByIdFailed("Get by id failed");
+        }
+        return plot;
     }
     async canExecute(identity) {
         if (identity.role === "ADMIN" || identity.role === "PROLO") {
@@ -30,9 +35,9 @@ let GetPlotById = class GetPlotById {
         return false;
     }
 };
-GetPlotById = __decorate([
+exports.GetPlotById = GetPlotById;
+exports.GetPlotById = GetPlotById = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.plotRepository)),
     __metadata("design:paramtypes", [Object])
 ], GetPlotById);
-exports.GetPlotById = GetPlotById;

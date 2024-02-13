@@ -28,32 +28,24 @@ let CreateUser = class CreateUser {
     async execute(payload) {
         const password = new Password_1.Password(payload.password).value;
         const hash = await this.passwordGateway.encrypt(password);
-        try {
-            const userExist = await this.userRepository.getByEmail(payload.email);
-            console.log("userExist", userExist);
-            if (userExist) {
-                throw new UserError_1.UserError.UserExist("USER_EXIST");
-            }
+        const userExist = await this.userRepository.getByEmail(payload.email);
+        if (userExist) {
+            throw new UserError_1.UserError.UserExist("USER_EXIST");
         }
-        catch (e) {
-            if (e.message === "USER_NOT_FOUND") {
-                const user = User_1.User.create({
-                    name: payload.name,
-                    email: payload.email,
-                    password: hash,
-                    role: payload.role,
-                });
-                await this.userRepository.save(user);
-                return user;
-            }
-            throw e;
-        }
+        const user = User_1.User.create({
+            name: payload.name,
+            email: payload.email,
+            password: hash,
+            role: payload.role,
+        });
+        await this.userRepository.save(user);
+        return user;
     }
 };
-CreateUser = __decorate([
+exports.CreateUser = CreateUser;
+exports.CreateUser = CreateUser = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.userRepository)),
     __param(1, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.passwordGateway)),
     __metadata("design:paramtypes", [Object, Object])
 ], CreateUser);
-exports.CreateUser = CreateUser;

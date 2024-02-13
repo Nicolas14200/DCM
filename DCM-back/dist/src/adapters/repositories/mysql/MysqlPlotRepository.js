@@ -260,8 +260,8 @@ let MysqlPlotRepository = class MysqlPlotRepository {
         throw new Error("Method not implemented.");
     }
 };
-MysqlPlotRepository = __decorate([
+exports.MysqlPlotRepository = MysqlPlotRepository;
+exports.MysqlPlotRepository = MysqlPlotRepository = __decorate([
     (0, inversify_1.injectable)(),
     __metadata("design:paramtypes", [Object])
 ], MysqlPlotRepository);
-exports.MysqlPlotRepository = MysqlPlotRepository;

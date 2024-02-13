@@ -9,6 +9,7 @@ export class MysqlEventCultureRepository implements EventCultureRepository {
     constructor(private readonly connect: mysql.Connection) {
         this.connect = connect;
     }
+
     async save(eventCulture: EventCulture): Promise<EventCulture> {
         console.log("eventCulture", eventCulture);
         try {
@@ -51,6 +52,10 @@ export class MysqlEventCultureRepository implements EventCultureRepository {
         }
     }
 
+    update(eventCulture: EventCulture): Promise<EventCulture> {
+        throw new Error("Method not implemented.");
+    }
+
     async getById(id: string): Promise<EventCulture> {
         const [results] = await this.connect.promise().query(`
             SELECT * 
@@ -85,8 +90,9 @@ export class MysqlEventCultureRepository implements EventCultureRepository {
         }
     }
 
-    async delete(id: string): Promise<void> {
+    async delete(id: string): Promise<boolean> {
         await this.connect.promise().query<RowDataPacket[]>('DELETE FROM event_culture WHERE id = ?', [id]);
+        return true;
     }
 
     async getEventCultureByPlotId(plotId: string): Promise<EventCulture[]> {

@@ -16,6 +16,7 @@ class ResetPasswordCommand {
     email;
     securityCode;
 }
+exports.ResetPasswordCommand = ResetPasswordCommand;
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
@@ -28,4 +29,3 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], ResetPasswordCommand.prototype, "securityCode", void 0);
-exports.ResetPasswordCommand = ResetPasswordCommand;

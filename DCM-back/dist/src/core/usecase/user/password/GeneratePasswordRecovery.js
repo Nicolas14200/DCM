@@ -49,10 +49,10 @@ let GeneratePasswordRecovery = class GeneratePasswordRecovery {
         return false;
     }
 };
-GeneratePasswordRecovery = __decorate([
+exports.GeneratePasswordRecovery = GeneratePasswordRecovery;
+exports.GeneratePasswordRecovery = GeneratePasswordRecovery = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.userRepository)),
     __param(1, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.emailGateway)),
     __metadata("design:paramtypes", [Object, Object])
 ], GeneratePasswordRecovery);
-exports.GeneratePasswordRecovery = GeneratePasswordRecovery;

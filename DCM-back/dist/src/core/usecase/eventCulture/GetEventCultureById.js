@@ -15,13 +15,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetEventCultureById = void 0;
 const inversify_1 = require("inversify");
 const DCMIdentifiers_1 = require("../DCMIdentifiers");
+const EventCultureError_1 = require("../../domain/models/errors/EventCultureError");
 let GetEventCultureById = class GetEventCultureById {
     _eventCultureRepository;
     constructor(_eventCultureRepository) {
         this._eventCultureRepository = _eventCultureRepository;
     }
-    execute(id) {
-        return this._eventCultureRepository.getById(id);
+    async execute(id) {
+        const eventCulture = await this._eventCultureRepository.getById(id);
+        if (!eventCulture) {
+            throw new EventCultureError_1.EventCultureError.GetByIdFailed("Get By Id Failed");
+        }
+        return eventCulture;
     }
     async canExecute(identity) {
         if (identity.role === "ADMIN" || identity.role === "PROLO") {
@@ -30,9 +35,9 @@ let GetEventCultureById = class GetEventCultureById {
         return false;
     }
 };
-GetEventCultureById = __decorate([
+exports.GetEventCultureById = GetEventCultureById;
+exports.GetEventCultureById = GetEventCultureById = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.eventCultureRepository)),
     __metadata("design:paramtypes", [Object])
 ], GetEventCultureById);
-exports.GetEventCultureById = GetEventCultureById;

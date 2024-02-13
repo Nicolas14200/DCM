@@ -8,4 +8,4 @@ var TypeEventCulture;
     TypeEventCulture["Implantation"] = "Implantation";
     TypeEventCulture["maintenance"] = "maintenance";
     TypeEventCulture["repport"] = "repport";
-})(TypeEventCulture = exports.TypeEventCulture || (exports.TypeEventCulture = {}));
+})(TypeEventCulture || (exports.TypeEventCulture = TypeEventCulture = {}));

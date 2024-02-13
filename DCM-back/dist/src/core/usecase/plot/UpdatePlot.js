@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdatePlot = void 0;
 const inversify_1 = require("inversify");
 const DCMIdentifiers_1 = require("../DCMIdentifiers");
+const PlotError_1 = require("../../domain/models/errors/PlotError");
 let UpdatePlot = class UpdatePlot {
     plotRepository;
     constructor(plotRepository) {
@@ -22,6 +23,9 @@ let UpdatePlot = class UpdatePlot {
     }
     async execute(payload) {
         const plot = await this.plotRepository.getById(payload.id);
+        if (!plot) {
+            throw new PlotError_1.PlotError.GetByIdFailed("Get by id failed");
+        }
         plot.update({
             name: payload.name,
             codeName: payload.codeName,
@@ -29,7 +33,7 @@ let UpdatePlot = class UpdatePlot {
             ph: payload.ph,
             plank: payload.plank,
             width: payload.width,
-            heigth: payload.heigth
+            heigth: payload.heigth,
         });
         this.plotRepository.update(plot);
         return plot;
@@ -41,9 +45,9 @@ let UpdatePlot = class UpdatePlot {
         return false;
     }
 };
-UpdatePlot = __decorate([
+exports.UpdatePlot = UpdatePlot;
+exports.UpdatePlot = UpdatePlot = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.plotRepository)),
     __metadata("design:paramtypes", [Object])
 ], UpdatePlot);
-exports.UpdatePlot = UpdatePlot;

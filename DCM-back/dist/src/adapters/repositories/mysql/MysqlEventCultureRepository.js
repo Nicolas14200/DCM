@@ -132,8 +132,8 @@ let MysqlEventCultureRepository = class MysqlEventCultureRepository {
         });
     }
 };
-MysqlEventCultureRepository = __decorate([
+exports.MysqlEventCultureRepository = MysqlEventCultureRepository;
+exports.MysqlEventCultureRepository = MysqlEventCultureRepository = __decorate([
     (0, inversify_1.injectable)(),
     __metadata("design:paramtypes", [Object])
 ], MysqlEventCultureRepository);
-exports.MysqlEventCultureRepository = MysqlEventCultureRepository;

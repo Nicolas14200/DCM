@@ -27,8 +27,8 @@ class AddSeriesToPlotCommand {
     plotId;
     series;
 }
+exports.AddSeriesToPlotCommand = AddSeriesToPlotCommand;
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], AddSeriesToPlotCommand.prototype, "plotId", void 0);
-exports.AddSeriesToPlotCommand = AddSeriesToPlotCommand;

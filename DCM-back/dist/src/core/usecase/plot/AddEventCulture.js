@@ -12,18 +12,22 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AddSeriesToPlot = void 0;
+exports.AddEventCulture = void 0;
 const inversify_1 = require("inversify");
 const DCMIdentifiers_1 = require("../DCMIdentifiers");
-let AddSeriesToPlot = class AddSeriesToPlot {
+const PlotError_1 = require("../../domain/models/errors/PlotError");
+let AddEventCulture = class AddEventCulture {
     _plotRepository;
     constructor(_plotRepository) {
         this._plotRepository = _plotRepository;
     }
-    async execute(addSeriesProps) {
-        const plot = await this._plotRepository.getById(addSeriesProps.plotId);
-        plot.addSeries(addSeriesProps.series);
-        await this._plotRepository.save(plot);
+    async execute(payload) {
+        const plot = await this._plotRepository.getById(payload.plotId);
+        if (!plot) {
+            throw new PlotError_1.PlotError.GetByIdFailed("PLOT_NOT_FOUND");
+        }
+        plot.addEventCulture(payload.eventCultureId);
+        await this._plotRepository.update(plot);
     }
     async canExecute(identity) {
         if (identity.role === "ADMIN" || identity.role === "PROLO") {
@@ -32,9 +36,9 @@ let AddSeriesToPlot = class AddSeriesToPlot {
         return false;
     }
 };
-exports.AddSeriesToPlot = AddSeriesToPlot;
-exports.AddSeriesToPlot = AddSeriesToPlot = __decorate([
+exports.AddEventCulture = AddEventCulture;
+exports.AddEventCulture = AddEventCulture = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(DCMIdentifiers_1.DCMIdentifiers.plotRepository)),
     __metadata("design:paramtypes", [Object])
-], AddSeriesToPlot);
+], AddEventCulture);

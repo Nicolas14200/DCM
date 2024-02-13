@@ -29,6 +29,7 @@ class CreateEventCultureCommand {
     disease;
     bug;
 }
+exports.CreateEventCultureCommand = CreateEventCultureCommand;
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
@@ -92,4 +93,3 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateEventCultureCommand.prototype, "bug", void 0);
-exports.CreateEventCultureCommand = CreateEventCultureCommand;

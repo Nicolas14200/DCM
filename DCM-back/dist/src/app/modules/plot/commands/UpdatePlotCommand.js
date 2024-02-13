@@ -22,6 +22,7 @@ class UpdatePlotCommand {
     heigth;
     width;
 }
+exports.UpdatePlotCommand = UpdatePlotCommand;
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
@@ -54,4 +55,3 @@ __decorate([
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
 ], UpdatePlotCommand.prototype, "width", void 0);
-exports.UpdatePlotCommand = UpdatePlotCommand;

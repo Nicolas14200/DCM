@@ -5,4 +5,4 @@ var Role;
 (function (Role) {
     Role["admin"] = "ADMIN";
     Role["prolo"] = "PROLO";
-})(Role = exports.Role || (exports.Role = {}));
+})(Role || (exports.Role = Role = {}));
