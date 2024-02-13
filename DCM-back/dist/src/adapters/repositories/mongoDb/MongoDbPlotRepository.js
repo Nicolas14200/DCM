@@ -9,9 +9,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MongoDbPlotRepository = void 0;
 require("reflect-metadata");
 const inversify_1 = require("inversify");
+const Plot_1 = require("../../../core/domain/entities/plot/Plot");
 const MongoDbPlotMapper_1 = require("./mappers/MongoDbPlotMapper");
 const PlotModel_1 = require("./models/PlotModel");
-const PlotError_1 = require("../../../core/domain/models/errors/PlotError");
 let MongoDbPlotRepository = class MongoDbPlotRepository {
     mongoDbPlotMapper = new MongoDbPlotMapper_1.MongoDbPlotMapper();
     async getAll() {
@@ -21,77 +21,83 @@ let MongoDbPlotRepository = class MongoDbPlotRepository {
         });
     }
     async save(plot) {
-        const plotModelmapped = this.mongoDbPlotMapper.fromDomain(plot);
-        try {
-            await PlotModel_1.PlotModel.findOneAndUpdate({
-                id: plot.props.id
-            }, {
-                $set: {
-                    id: plot.props.id,
-                    name: plot.props.name,
-                    codeName: plot.props.codeName,
-                    width: plot.props.width,
-                    heigth: plot.props.heigth,
-                    area: plot.props.area,
-                    ph: plot.props.ph,
-                    pebbles: plot.props.pebbles,
-                    plank: plot.props.plank,
-                    series: plot.props.series,
-                    subPlot: plot.props.subPlot,
-                    eventCulture: plotModelmapped.eventCulture.map((elem) => elem)
-                }
-            }, {
-                upsert: true,
-            });
-            return plot;
-        }
-        catch (e) {
-            throw new Error(e);
-        }
+        const plotModel = new PlotModel_1.PlotModel({
+            id: plot.props.id,
+            name: plot.props.name,
+            codeName: plot.props.codeName,
+            width: plot.props.width,
+            heigth: plot.props.heigth,
+            area: plot.props.area,
+            ph: plot.props.ph,
+            pebbles: plot.props.pebbles,
+            plank: plot.props.plank,
+            series: plot.props.series.map((elem) => elem),
+            subPlot: plot.props.subPlot,
+            eventCulture: plot.props.eventCulture.map((elem) => elem),
+        });
+        plotModel.save();
+        return new Plot_1.Plot({
+            id: plotModel.id,
+            name: plotModel.name,
+            codeName: plotModel.codeName,
+            width: plotModel.width,
+            heigth: plotModel.heigth,
+            area: plotModel.area,
+            ph: plotModel.ph,
+            pebbles: plotModel.pebbles,
+            plank: plotModel.plank,
+            series: plotModel.series.map((elem) => elem),
+            subPlot: plotModel.subPlot,
+            eventCulture: plotModel.eventCulture.map((elem) => elem),
+        });
     }
     async update(plot) {
-        const plotModelmapped = this.mongoDbPlotMapper.fromDomain(plot);
-        await PlotModel_1.PlotModel.findOneAndUpdate({
-            id: plot.props.id
+        const plotToUpdate = await PlotModel_1.PlotModel.findOneAndUpdate({
+            id: plot.props.id,
         }, {
             $set: {
-                id: plotModelmapped.id,
-                name: plotModelmapped.name,
-                codeName: plotModelmapped.codeName,
-                width: plotModelmapped.width,
-                heigth: plotModelmapped.heigth,
-                area: plotModelmapped.area,
-                ph: plotModelmapped.ph,
-                pebbles: plotModelmapped.pebbles,
-                plank: plotModelmapped.plank,
-                series: plotModelmapped.series,
-                subPlot: plotModelmapped.subPlot,
-                eventCulture: plotModelmapped.eventCulture.map((elem) => elem)
-            }
+                id: plot.props.id,
+                name: plot.props.name,
+                codeName: plot.props.codeName,
+                width: plot.props.width,
+                heigth: plot.props.heigth,
+                area: plot.props.area,
+                ph: plot.props.ph,
+                pebbles: plot.props.pebbles,
+                plank: plot.props.plank,
+                series: plot.props.series.map((elem) => elem),
+                subPlot: plot.props.subPlot,
+                eventCulture: plot.props.eventCulture.map((elem) => elem),
+            },
         }, {
             upsert: true,
         });
-        return plot;
+        if (!plotToUpdate) {
+            return null;
+        }
+        return this.mongoDbPlotMapper.toDomain(plotToUpdate);
     }
     async getById(id) {
         const plot = await PlotModel_1.PlotModel.findOne({
-            id: id
+            id: id,
         });
-        if (plot) {
-            return this.mongoDbPlotMapper.toDomain(plot);
+        if (!plot) {
+            return null;
         }
+        return this.mongoDbPlotMapper.toDomain(plot);
     }
     async getByCodeName(codeName) {
         const plot = await PlotModel_1.PlotModel.findOne({
-            codeName: codeName
+            codeName: codeName,
         });
-        if (plot) {
-            return this.mongoDbPlotMapper.toDomain(plot);
+        if (!plot) {
+            return null;
         }
-        throw new PlotError_1.PlotError.GetByCodeNameFailed("PLOT_NOT_FOUND");
+        return this.mongoDbPlotMapper.toDomain(plot);
     }
     async delete(id) {
         await PlotModel_1.PlotModel.findOneAndDelete({ id });
+        return true;
     }
 };
 exports.MongoDbPlotRepository = MongoDbPlotRepository;

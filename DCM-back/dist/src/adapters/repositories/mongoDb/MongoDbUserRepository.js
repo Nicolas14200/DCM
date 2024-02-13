@@ -8,55 +8,70 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MongoDbUserRepository = void 0;
 require("reflect-metadata");
+const User_1 = require("../../../core/domain/entities/user/User");
 const UserModel_1 = require("./models/UserModel");
 const mongoDbUserMappper_1 = require("./mappers/mongoDbUserMappper");
-const UserError_1 = require("../../../core/domain/models/errors/UserError");
 const inversify_1 = require("inversify");
 let MongoDbUserRepository = class MongoDbUserRepository {
-    update(payload) {
-        throw new Error('Method not implemented.');
-    }
     mongoDbUserMappper = new mongoDbUserMappper_1.MongoDbUserMappper();
     async save(user) {
-        if (!user.props.email || !user.props.name) {
-            throw new UserError_1.UserError.MissingInformation("MISSING INFORATION");
-        }
-        await UserModel_1.UserModel.findOneAndUpdate({
-            id: user.props.id
+        const userModel = new UserModel_1.UserModel({
+            email: user.props.email,
+            id: user.props.id,
+            name: user.props.name,
+            password: user.props.password,
+            role: user.props.role,
+            securityCode: user.props.securityCode,
+        });
+        await userModel.save();
+        return new User_1.User({
+            email: userModel.email,
+            id: userModel.id,
+            name: userModel.name,
+            password: userModel.password,
+            role: userModel.role,
+            securityCode: userModel.securityCode,
+        });
+    }
+    async update(payload) {
+        const result = await UserModel_1.UserModel.findOneAndUpdate({
+            id: payload.id,
         }, {
             $set: {
-                email: user.props.email,
-                id: user.props.id,
-                name: user.props.name,
-                password: user.props.password,
-                role: user.props.role,
-                securityCode: user.props.securityCode
-            }
+                email: payload.email,
+                id: payload.id,
+                name: payload.name,
+                password: payload.password,
+            },
         }, {
             upsert: true,
         });
-        return user;
+        if (!result) {
+            return null;
+        }
+        return this.mongoDbUserMappper.toDomain(result);
     }
     async getByEmail(email) {
         const result = await UserModel_1.UserModel.findOne({
-            email: email
+            email: email,
         });
-        if (result) {
-            return this.mongoDbUserMappper.toDomain(result);
+        if (!result) {
+            return null;
         }
-        throw new UserError_1.UserError.GetByEmailFailed("USER_NOT_FOUND");
+        return this.mongoDbUserMappper.toDomain(result);
     }
     async getById(id) {
         const result = await UserModel_1.UserModel.findOne({
-            id: id
+            id: id,
         });
         if (result) {
             return this.mongoDbUserMappper.toDomain(result);
         }
-        throw new UserError_1.UserError.GetByIdFailed("USER_NOT_FOUND");
+        return null;
     }
     async delete(id) {
         await UserModel_1.UserModel.findOneAndDelete({ id });
+        return true;
     }
 };
 exports.MongoDbUserRepository = MongoDbUserRepository;

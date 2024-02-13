@@ -10,22 +10,69 @@ exports.MongoDbEventCultureRepository = void 0;
 require("reflect-metadata");
 const MongoDbEventCultureMapper_1 = require("./mappers/MongoDbEventCultureMapper");
 const EventCultureModel_1 = require("./models/EventCultureModel");
+const EventCulture_1 = require("../../../core/domain/entities/eventCulture/EventCulture");
 const inversify_1 = require("inversify");
 let MongoDbEventCultureRepository = class MongoDbEventCultureRepository {
     mongoDbEventCultureMapper = new MongoDbEventCultureMapper_1.MongoDbEventCultureMapper();
     async delete(id) {
-        await EventCultureModel_1.eventCultureModel.findOneAndDelete({ id });
+        await EventCultureModel_1.EventCultureModel.findOneAndDelete({ id });
         return true;
     }
     async getEventCultureByPlotId(plotId) {
-        const results = await EventCultureModel_1.eventCultureModel.find({
+        const results = await EventCultureModel_1.EventCultureModel.find({
             plotId: plotId
         });
         const eventCultureArray = results.map((result) => this.mongoDbEventCultureMapper.toDomain(result));
         return eventCultureArray;
     }
     async save(eventCulture) {
-        await EventCultureModel_1.eventCultureModel.findOneAndUpdate({
+        const eventCultureModel = new EventCultureModel_1.EventCultureModel({
+            id: eventCulture.props.id,
+            date: eventCulture.props.date,
+            note: eventCulture.props.note,
+            plotId: eventCulture.props.plotId,
+            machine: eventCulture.props.machine,
+            typeEventCulture: eventCulture.props.typeEventCulture,
+            bringType: eventCulture.props.bringType,
+            quantity: eventCulture.props.quantity,
+            vegetable: eventCulture.props.vegetable,
+            method: eventCulture.props.method,
+            nbHuman: eventCulture.props.nbHuman,
+            nbHours: eventCulture.props.nbHours,
+            succes: eventCulture.props.succes,
+            disease: eventCulture.props.disease,
+            bug: eventCulture.props.bug,
+        });
+        await eventCultureModel.save();
+        return new EventCulture_1.EventCulture({
+            id: eventCultureModel.id,
+            date: eventCultureModel.date,
+            note: eventCultureModel.note,
+            plotId: eventCultureModel.plotId,
+            machine: eventCultureModel.machine,
+            typeEventCulture: eventCultureModel.typeEventCulture,
+            bringType: eventCultureModel.bringType,
+            quantity: eventCultureModel.quantity,
+            vegetable: eventCultureModel.vegetable,
+            method: eventCultureModel.method,
+            nbHuman: eventCultureModel.nbHuman,
+            nbHours: eventCultureModel.nbHours,
+            succes: eventCultureModel.succes,
+            disease: eventCultureModel.disease,
+            bug: eventCultureModel.bug,
+        });
+    }
+    async getById(id) {
+        const result = await EventCultureModel_1.EventCultureModel.findOne({
+            id: id
+        });
+        if (result) {
+            return this.mongoDbEventCultureMapper.toDomain(result);
+        }
+        return null;
+    }
+    async update(eventCulture) {
+        await EventCultureModel_1.EventCultureModel.findOneAndUpdate({
             id: eventCulture.props.id
         }, {
             $set: {
@@ -49,18 +96,6 @@ let MongoDbEventCultureRepository = class MongoDbEventCultureRepository {
             upsert: true,
         });
         return eventCulture;
-    }
-    async getById(id) {
-        const result = await EventCultureModel_1.eventCultureModel.findOne({
-            id: id
-        });
-        if (result) {
-            return this.mongoDbEventCultureMapper.toDomain(result);
-        }
-        return null;
-    }
-    update(eventCulture) {
-        return null;
     }
 };
 exports.MongoDbEventCultureRepository = MongoDbEventCultureRepository;

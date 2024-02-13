@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.eventCultureModel = exports.eventCultureShema = void 0;
+exports.EventCultureModel = exports.eventCultureShema = void 0;
 const mongoose = __importStar(require("mongoose"));
 exports.eventCultureShema = new mongoose.Schema({
     id: {
@@ -83,4 +83,4 @@ exports.eventCultureShema = new mongoose.Schema({
         type: String
     }
 });
-exports.eventCultureModel = mongoose.model("eventCultures", exports.eventCultureShema);
+exports.EventCultureModel = mongoose.model("eventCultures", exports.eventCultureShema);

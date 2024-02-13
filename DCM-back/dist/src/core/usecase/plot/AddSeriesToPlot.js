@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AddSeriesToPlot = void 0;
 const inversify_1 = require("inversify");
 const DCMIdentifiers_1 = require("../DCMIdentifiers");
+const PlotError_1 = require("../../domain/models/errors/PlotError");
 let AddSeriesToPlot = class AddSeriesToPlot {
     _plotRepository;
     constructor(_plotRepository) {
@@ -22,8 +23,11 @@ let AddSeriesToPlot = class AddSeriesToPlot {
     }
     async execute(addSeriesProps) {
         const plot = await this._plotRepository.getById(addSeriesProps.plotId);
+        if (!plot) {
+            throw new PlotError_1.PlotError.GetByIdFailed("PLOT_NOT_FOUND");
+        }
         plot.addSeries(addSeriesProps.series);
-        await this._plotRepository.save(plot);
+        await this._plotRepository.update(plot);
     }
     async canExecute(identity) {
         if (identity.role === "ADMIN" || identity.role === "PROLO") {

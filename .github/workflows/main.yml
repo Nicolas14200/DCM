@@ -60,10 +60,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: buid docker image
+      - name: build app
         run: |
           cd DCM-back
-          npm run build
+          docker build -t dcm-app
+
 
       
 

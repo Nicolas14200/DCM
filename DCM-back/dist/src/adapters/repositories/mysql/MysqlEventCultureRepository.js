@@ -64,6 +64,9 @@ let MysqlEventCultureRepository = class MysqlEventCultureRepository {
             throw new EventCultureError_1.EventCultureError.CreateeventCultureFailed("CREATE_EVENT_FAILED");
         }
     }
+    update(eventCulture) {
+        throw new Error("Method not implemented.");
+    }
     async getById(id) {
         const [results] = await this.connect.promise().query(`
             SELECT * 
@@ -99,6 +102,7 @@ let MysqlEventCultureRepository = class MysqlEventCultureRepository {
     }
     async delete(id) {
         await this.connect.promise().query('DELETE FROM event_culture WHERE id = ?', [id]);
+        return true;
     }
     async getEventCultureByPlotId(plotId) {
         const results = await this.connect.promise().query(`

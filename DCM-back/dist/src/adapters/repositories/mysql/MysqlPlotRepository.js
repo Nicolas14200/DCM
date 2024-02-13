@@ -255,6 +255,7 @@ let MysqlPlotRepository = class MysqlPlotRepository {
     }
     async delete(id) {
         await this.connect.promise().query('DELETE FROM plot WHERE id = ?', [id]);
+        return true;
     }
     update(plot) {
         throw new Error("Method not implemented.");
