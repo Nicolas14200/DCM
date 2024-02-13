@@ -63,7 +63,7 @@ jobs:
       - name: build app
         run: |
           cd DCM-back
-          docker build -t dcm-app
+          docker build
 
 
       
