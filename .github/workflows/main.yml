@@ -73,7 +73,7 @@ jobs:
       
       - name: push-dokerhub
         run: |
-          docker ps
+          docker images
           docker push nicolas14200/digital_culture_manager:tagname
 
 
