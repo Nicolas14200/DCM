@@ -68,13 +68,14 @@ jobs:
       - name: build app
         run: |
           cd DCM-back
-          docker build .
+          docker build -t nicolas14200/digital_culture_manager:latest .
       
       
       - name: push-dokerhub
         run: |
+          docker login -u nicolas14200 -p dckr_pat_Jk8HbkVw1XBbkg71je1Yrcmb0OQ
           docker images
-          docker push nicolas14200/digital_culture_manager:tagname
+          docker push nicolas14200/digital_culture_manager:latest
 
 
       
