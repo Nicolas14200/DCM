@@ -24,6 +24,7 @@ export class UpdateUser implements Usecase<UpdateUserProps, User>{
         private passwordGateway: PasswordGateway
       ) {}
     async execute(payload: UpdateUserProps): Promise<User> {
+        console.log("payload", payload)
         const user: User = await this.userRepository.getById(payload.id);
         const password = new Password(payload.password).value;
         const hash = await this.passwordGateway.encrypt(password);

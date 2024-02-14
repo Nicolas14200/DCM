@@ -3,32 +3,13 @@ import { MysqlUserRepository } from "../../repositories/mysql/MysqlUserRepositor
 import { User } from '../../../core/domain/entities/user/User';
 import { Role } from '../../../core/domain/valueObjects/Role';
 import { v4 } from 'uuid';
-import mysql, { ConnectionOptions } from 'mysql2';
-
-const createDb = async (): Promise<mysql.Connection> => {
-    try {
-        const access: ConnectionOptions = {
-            host: '127.0.0.1',
-            user: 'root',
-            password: 'root',
-            database: 'DCM',
-            port: 3306,
-            authPlugins: {
-            },
-        };
-        const conn = mysql.createConnection(access);
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        return conn;
-    } catch (e) {
-        throw e;
-    }
-}
+import { connect } from "./connectDb";
 
 describe("Integration - MySqlUserRepository", () => {
     let userRepo: MysqlUserRepository;
     let user: User;
     beforeAll(async () => {
-        userRepo = new MysqlUserRepository(await createDb() as mysql.Connection);
+        userRepo = new MysqlUserRepository(await connect);
 
         user = User.create({
             email: `nicolas${v4()}@yopmaiol.com`,

@@ -39,6 +39,7 @@ export class CreateUser implements Usecase<CreateUserProps, User> {
       password: hash,
       role: payload.role,
     });
+
     await this.userRepository.save(user);
     return user;
   }

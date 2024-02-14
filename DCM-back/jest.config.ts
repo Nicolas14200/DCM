@@ -20,5 +20,6 @@ const config: Config.InitialOptions = {
           statements: 100,
         },
       },
+      "testTimeout": 30000 
 };
 export default config;

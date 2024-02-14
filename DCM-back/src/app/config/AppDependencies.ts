@@ -37,13 +37,7 @@ import { MysqlUserRepository } from '../../adapters/repositories/mysql/MysqlUser
 import { createDb } from '../../adapters/repositories/mysql/connectDb';
 import { MysqlPlotRepository } from '../../adapters/repositories/mysql/MysqlPlotRepository';
 import { MysqlEventCultureRepository } from '../../adapters/repositories/mysql/MysqlEventCultureRepository';
-import { Connection } from 'mysql2';
-
-
-let connect: Promise<Connection>
-if (process.env.DB === "mysql") {
-    connect = createDb();
-}
+import { AddEventCulture } from '../../core/usecase/plot/AddEventCulture';
 
 export class AppDependencies extends Container {
     async init() {
@@ -53,9 +47,12 @@ export class AppDependencies extends Container {
             this.bind(DCMIdentifiers.plotRepository).toConstantValue(new MongoDbPlotRepository())
         }
         if (process.env.DB === "mysql") {
-            this.bind(DCMIdentifiers.userRepository).toConstantValue(new MysqlUserRepository(await connect))
-            this.bind(DCMIdentifiers.eventCultureRepository).toConstantValue(new MysqlEventCultureRepository(await connect))
-            this.bind(DCMIdentifiers.plotRepository).toConstantValue(new MysqlPlotRepository(await connect))
+            const connect = await createDb();
+            this.bind(DCMIdentifiers.userRepository).toConstantValue(new MysqlUserRepository(connect))
+            this.bind(DCMIdentifiers.eventCultureRepository).toConstantValue(new MysqlEventCultureRepository(connect))
+            this.bind(DCMIdentifiers.plotRepository).toConstantValue(new MysqlPlotRepository(connect))
+
+
         }
 
         this.bind(DCMIdentifiers.passwordGateway).toConstantValue(new BcryptPasswordGateway())
@@ -92,6 +89,7 @@ export class AppDependencies extends Container {
         this.bind(GetEventsCulturesByPlotId).toSelf()
         this.bind(DeleteEventCulture).toSelf()
         this.bind(UpdateEventCulture).toSelf()
+        this.bind(AddEventCulture).toSelf()
         return this;
     }
 }

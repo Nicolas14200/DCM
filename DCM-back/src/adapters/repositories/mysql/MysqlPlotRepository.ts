@@ -1,4 +1,3 @@
-import { PlotError } from "../../../core/domain/models/errors/PlotError";
 import { Plot } from "../../../core/domain/entities/plot/Plot";
 import { PlotRepository } from "../../../core/domain/repositories/PlotRepository";
 import { injectable } from "inversify";
@@ -13,9 +12,8 @@ export class MysqlPlotRepository implements PlotRepository {
 
   async save(plot: Plot): Promise<Plot> {
     await this.connect.promise().query<RowDataPacket[]>(
-      `
-                INSERT IGNORE INTO plot (id, name, code_name, width, height, area, ph, pebbles, plank)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT IGNORE INTO plot (id, name, code_name, width, height, area, ph, pebbles, plank)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         plot.props.id,
         plot.props.name,
@@ -29,41 +27,42 @@ export class MysqlPlotRepository implements PlotRepository {
       ]
     );
 
-    if (plot.props.series && plot.props.series.length > 0) {
+    await this.saveSeries(plot.props.series, plot.props.id);
+    return plot;
+  }
+
+  async saveSeries(series: Series[], plotId: string) {
+    if (series.length > 0) {
       await this.connect.promise().query(
-        `
-                    DELETE FROM series
-                    WHERE plot_id = ?`,
-        [plot.props.id]
+        `DELETE FROM series
+         WHERE plot_id = ?`,
+        [plotId]
       );
-      const seriesValues = plot.props.series.map((serie: Series) => [
-        plot.props.id,
+      const seriesValues = series.map((serie: Series) => [
+        plotId,
         serie.vegetableVariety,
         serie.nbPlank,
       ]);
+
       await this.connect.promise().query(
-        `
-                    INSERT INTO series (plot_id, vegetable_variety, nb_plank)
-                    VALUES ?`,
+        `INSERT INTO series (plot_id, vegetable_variety, nb_plank)
+         VALUES ?`,
         [seriesValues]
       );
     }
-    return plot;
   }
 
   async update(plot: Plot): Promise<Plot> {
     await this.connect.promise().query<RowDataPacket[]>(
-      `
-            UPDATE plot
-            SET name = ?,
-                code_name = ?,
-                width = ?,
-                height = ?,
-                area = ?,
-                ph = ?,
-                pebbles = ?,
-                plank = ?
-            WHERE id = ?
+      `UPDATE plot SET name = ?,
+                       code_name = ?,
+                       width = ?,
+                       height = ?,
+                       area = ?,
+                       ph = ?,
+                       pebbles = ?,
+                       plank = ?
+        WHERE id = ?
             `,
       [
         plot.props.name,
@@ -77,16 +76,14 @@ export class MysqlPlotRepository implements PlotRepository {
         plot.props.id,
       ]
     );
+    await this.saveSeries(plot.props.series, plot.props.id);
     return plot;
   }
 
   async getById(id: string): Promise<Plot> {
-
-    const [results] = await this.connect.promise().query<RowDataPacket[]>(
-      `SELECT * FROM plot WHERE id = ?`
-    ,[id]
-    );
-
+    const [results] = await this.connect
+      .promise()
+      .query<RowDataPacket[]>(`SELECT * FROM plot WHERE id = ?`, [id]);
 
     if (results && results.length > 0) {
       return new Plot({

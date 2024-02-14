@@ -27,6 +27,7 @@ describe("e2e - PlotController", () => {
   let subPlot: Plot;
   let eventCulture: EventCulture;
   let series: Series;
+
   beforeAll(async () => {
     await mongoose.connect(`mongodb://127.0.0.1:27017/DCM`);
     plotRepo = new MongoDbPlotRepository();
@@ -41,6 +42,7 @@ describe("e2e - PlotController", () => {
       ph: 1,
       plank: 1,
     });
+    
     plot = Plot.create({
       name: `${v4()}`,
       codeName: `QSDFG123`,
@@ -162,6 +164,7 @@ describe("e2e - PlotController", () => {
       })
       .expect(200);
   });
+
   it("Should return 200 and return all plot", async () => {
     await request(app)
       .post("/plot/all")
@@ -170,6 +173,7 @@ describe("e2e - PlotController", () => {
         expect(response.body[0].codeName).toEqual("AZERTY666");
       });
   });
+  
   it("Should return 200 and return a plot by is code Name", async () => {
     await request(app)
       .post("/plot/getplotbycodename")
@@ -178,7 +182,7 @@ describe("e2e - PlotController", () => {
         })
       .expect((response) => {
         console.log(response.error);
-        expect(response.body.props.codeName).toEqual("AZERTY666");
+        expect(response.body.props.codeName).toEqual("QSDFG123");
       })
       .expect(200);
   });

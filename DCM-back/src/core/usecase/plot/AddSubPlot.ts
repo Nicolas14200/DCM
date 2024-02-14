@@ -18,9 +18,9 @@ export class AddSubPlot implements Usecase<AddSubPlotProps, void> {
 
   async execute(addSubPlotProps: AddSubPlotProps): Promise<void> {
     const plot = await this._plotRepository.getById(addSubPlotProps.currentId);
-
+    
     plot.addSubPlot(addSubPlotProps.plotIdToAdd);
-    await this._plotRepository.save(plot);
+    await this._plotRepository.update(plot);
   }
 
   async canExecute(identity: Identity): Promise<boolean> {

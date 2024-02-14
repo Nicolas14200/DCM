@@ -24,7 +24,6 @@ describe("Unit - CreateUser", () => {
       password: "azerty0123456",
       role: Role.admin,
     });
-    console.log(user);
     const userExist: User = await userRepo.getByEmail(user.props.email);
     expect(userExist.props.email).toEqual("benjamon@yopmail.com");
   });

@@ -3,7 +3,7 @@ import mysql, { ConnectionOptions } from 'mysql2';
 export const createDb = async (): Promise<mysql.Connection> => {
 
     const access: ConnectionOptions = {
-        host: 'mysql',
+        host: '127.0.0.1',
         user: 'root',
         password: 'root',
         database: 'DCM',

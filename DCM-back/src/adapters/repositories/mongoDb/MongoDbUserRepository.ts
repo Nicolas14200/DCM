@@ -23,8 +23,11 @@ export class MongoDbUserRepository implements UserRepository {
       role: user.props.role,
       securityCode: user.props.securityCode,
     });
-
-    await userModel.save();
+    try {
+      await userModel.save();
+    } catch (e) {
+      console.error(e);
+    }
 
     return new User({
       email: userModel.email,

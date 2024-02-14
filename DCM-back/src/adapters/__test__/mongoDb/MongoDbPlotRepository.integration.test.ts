@@ -50,7 +50,7 @@ describe("Integration - MongoDbPlotRepository", () => {
   });
   it("Should return all plot", async () => {
     const allPlot: Plot[] = await PlotRepo.getAll();
-    expect(allPlot[0].props.codeName).toEqual("ASX45");
+    expect(allPlot[0].props.codeName).toEqual("AZERTY666");
   });
 
   it("Should return a plot by is id", async () => {

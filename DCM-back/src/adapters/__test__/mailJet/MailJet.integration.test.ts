@@ -2,6 +2,8 @@ import "reflect-metadata";
 import Mailjet from "node-mailjet";
 import { MailJetGateway } from "../../gateways/mailJet/MailJetGateway";
 import { Msg } from "../../../core/domain/valueObjects/Msg";
+import dotenv from 'dotenv';
+dotenv.config();
 
 describe("Integration - MailJet", () => {
   let mailJetGateway: MailJetGateway;
@@ -11,8 +13,8 @@ describe("Integration - MailJet", () => {
 
 
     const mailJet = new Mailjet({
-      apiKey: "",
-      apiSecret: "",
+      apiKey: process.env.MJ_APIKEY_PUBLIC,
+      apiSecret: process.env.MJ_APIKEY_PRIVATE
     });
 
     mailJetGateway = new MailJetGateway(mailJet);

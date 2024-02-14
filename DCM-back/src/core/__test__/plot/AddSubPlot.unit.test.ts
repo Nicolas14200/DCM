@@ -11,6 +11,7 @@ describe("Unit - AddSubPlot", () => {
 
   beforeAll(async () => {
     plotRepo = new InMemoryPlotRepository(new Map());
+    addSubPlot = new AddSubPlot(plotRepo);
     plot1 = Plot.create({
       name: "Parcelle 0001",
       codeName: "code alpha romero bétasoid",
@@ -36,6 +37,10 @@ describe("Unit - AddSubPlot", () => {
   });
 
   it("Should add an id to plot ", async () => {
+    addSubPlot.execute({
+      currentId: plot2.props.id,
+      plotIdToAdd: plot1.props.id,
+    })
     plot1.addSubPlot(plot2.props.id);
     await plotRepo.save(plot1);
     expect(plot1.props.subPlot[0]).toEqual(plot2.props.id);
