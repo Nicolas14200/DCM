@@ -36,7 +36,6 @@ describe("Integration - MySqlUserRepository", () => {
             password: "azzearrt4522787",
             role: Role.admin,
         });
-
     });
 
     it('Should save a user', async () => {
@@ -47,6 +46,11 @@ describe("Integration - MySqlUserRepository", () => {
 
     it('Should return user by id', async () => {
         const userExist = await userRepo.getById(user.props.id);
+        expect(userExist.props.name).toEqual("Ban");
+    })
+
+    it('Should return user by email', async () => {
+        const userExist = await userRepo.getByEmail(user.props.email);
         expect(userExist.props.name).toEqual("Ban");
     })
 
@@ -61,8 +65,5 @@ describe("Integration - MySqlUserRepository", () => {
 
     })
 
-    it('Should return user by email', async () => {
-        const userExist = await userRepo.getByEmail(user.props.email);
-        expect(userExist.props.name).toEqual("Ban");
-    })
+
 })

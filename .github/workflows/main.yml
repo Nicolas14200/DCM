@@ -41,11 +41,16 @@ jobs:
           cd DCM-back
           npm install
 
-      - name: make db
+      - name: make db mysql
         run: |
           cd DCM-back
           make db-up
-      
+
+      - name: make db mongo
+        run: |
+          cd DCM-back
+          make mongo-start
+
       - name: test
         run: |
           cd DCM-back
@@ -64,6 +69,12 @@ jobs:
         run: |
           cd DCM-back
           docker build .
+      
+      
+      - name: push-dokerhub
+        run: |
+          docker ps
+          docker push nicolas14200/digital_culture_manager:tagname
 
 
       
