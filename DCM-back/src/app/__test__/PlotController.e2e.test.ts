@@ -80,6 +80,19 @@ describe("e2e - PlotController", () => {
     await plotRepo.save(subPlot);
   });
 
+  it("Should return 200 and return a plot by is code Name", async () => {
+    await request(app)
+      .post("/plot/getplotbycodename")
+      .send({ 
+        codeName: plot.props.codeName 
+        })
+      .expect((response) => {
+        console.log(response.body);
+        expect(response.body.props.codeName).toEqual("QSDFG123");
+      })
+      .expect(200);
+  });
+  
   it("Should return 201 and create a plot", async () => {
     await request(app)
       .post("/plot/create")
@@ -174,16 +187,5 @@ describe("e2e - PlotController", () => {
       });
   });
   
-  it("Should return 200 and return a plot by is code Name", async () => {
-    await request(app)
-      .post("/plot/getplotbycodename")
-      .send({ 
-        codeName: plot.props.codeName 
-        })
-      .expect((response) => {
-        console.log(response.error);
-        expect(response.body.props.codeName).toEqual("QSDFG123");
-      })
-      .expect(200);
-  });
+
 });

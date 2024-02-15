@@ -15,7 +15,7 @@ db-model:
 	for file in $$PWD/src/adapters/repositories/mysql/models/*.sql; do \
 		fileName=$$(basename "$$file"); \
 		echo "Executing SQL file: $$fileName"; \
-		docker exec -it DCM-db-mysql sh -c "mysql -h 127.0.0.1 -P 3306 -u root -proot -D DCM < models/\"$$fileName\""; \
+		docker exec DCM-db-mysql sh -c "mysql -h DCM-db-mysql -P 3306 -u root -proot -D DCM < models/\"$$fileName\""; \
 	done
 
 .PHONY: db-seed 
@@ -23,7 +23,7 @@ db-seed:
 	for file in $$PWD/src/adapters/repositories/mysql/seeds/*.sql; do \
 		fileName=$$(basename "$$file"); \
 		echo "Executing SQL file: $$fileName"; \
-		docker exec -it DCM-db-mysql sh -c "mysql -h 127.0.0.1 -P 3306 -u root -proot -D DCM < seeds/\"$$fileName\""; \
+		docker exec DCM-db-mysql sh -c "mysql -h DCM-db-mysql -P 3306 -u root -proot -D DCM < seeds/\"$$fileName\""; \
 	done
 
 .PHONY: db-reset

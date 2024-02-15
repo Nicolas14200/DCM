@@ -1,27 +1,27 @@
 name: deploy
 
-on: 
-  push: 
-    branches: 
+on:
+  push:
+    branches:
       - master
 
 env:
-  MJ_APIKEY_PUBLIC: 89224c65a1342099a6edf512c5e36644
-  MJ_APIKEY_PRIVATE: fb36ec56d8b913994b2c7b811677ccce
-  JWT_KEY: secret_key
-  DB: mongoDb
-  
-jobs: 
-  build: 
+  MJ_APIKEY_PUBLIC: ${{ secrets.MJ_APIKEY_PUBLIC }}
+  MJ_APIKEY_PRIVATE: ${{ secrets.MJ_APIKEY_PRIVATE }}
+  JWT_KEY: ${{ secrets.JWT_KEY }}
+  DB: ${{ secrets.DB }}
+
+jobs:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4.1.1
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4.0.2
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Install dependencies
         run: |
@@ -52,6 +52,16 @@ jobs:
           cd DCM-back
           make db-up
 
+      - name: make model
+        run: |
+          cd DCM-back
+          make db-model
+      
+      - name: make seed
+        run: |
+          cd DCM-back
+          make db-seed
+
       - name: make db mongo
         run: |
           cd DCM-back
@@ -75,15 +85,9 @@ jobs:
         run: |
           cd DCM-back
           docker build -t nicolas14200/digital_culture_manager:latest .
-      
-      
+
       - name: push-dokerhub
         run: |
           docker login --username nicolas14200 --password dckr_pat_Jk8HbkVw1XBbkg71je1Yrcmb0OQ
           docker images
           docker push nicolas14200/digital_culture_manager:latest
-
-
-      
-
-      
