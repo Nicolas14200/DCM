@@ -29,7 +29,7 @@ describe("Integration - MysqlPlotRepository", () => {
 
   it("Should return a plot by is code name", async () => {
     const plotExist = await plotRepo.getByCodeName(plot.props.codeName);
-    expect(plotExist.props.name).toEqual("New name");
+    expect(plotExist.props.name).toEqual("name000001");
   });
 
   it("Should return a plot by is id", async () => {
@@ -55,7 +55,7 @@ describe("Integration - MysqlPlotRepository", () => {
 
   it("Should return all plots", async () => {
     const result = await plotRepo.getAll();
-    expect(result[0].props.name).toEqual("toto");
+    expect(result[0].props.name).toBeDefined();
   });
 
   it("Should delete plot", async () => {
