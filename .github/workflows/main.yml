@@ -53,6 +53,10 @@ jobs:
           make db-up
           docker ps
 
+      - name: Wait for 10 seconds
+        run: |
+          sleep 10
+          
       - name: make model
         run: |
           cd DCM-back
