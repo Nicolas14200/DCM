@@ -51,6 +51,7 @@ jobs:
         run: |
           cd DCM-back
           make db-up
+          docker ps
 
       - name: make model
         run: |
