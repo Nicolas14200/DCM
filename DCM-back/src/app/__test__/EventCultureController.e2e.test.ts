@@ -39,6 +39,7 @@ describe("e2e - EventCultureController", () => {
       plank: 1,
     });
     await plotRepo.save(plot);
+    
     eventCulture = EventCulture.create({
       note: "NOTE 666",
       plotId: plot.props.id,

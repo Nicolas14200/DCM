@@ -3,6 +3,7 @@ import { Usecase } from "../Usecase";
 import { inject, injectable } from "inversify";
 import { DCMIdentifiers } from "../DCMIdentifiers";
 import { PlotRepository } from "../../../core/domain/repositories/PlotRepository";
+import { PlotError } from "../../domain/models/errors/PlotError";
 
 export interface AddSubPlotProps {
   currentId: string;
@@ -18,7 +19,9 @@ export class AddSubPlot implements Usecase<AddSubPlotProps, void> {
 
   async execute(addSubPlotProps: AddSubPlotProps): Promise<void> {
     const plot = await this._plotRepository.getById(addSubPlotProps.currentId);
-    
+    if (!plot) {
+      throw new PlotError.PlotNotFound("PLOT_NOT_FOUND");
+    }
     plot.addSubPlot(addSubPlotProps.plotIdToAdd);
     await this._plotRepository.update(plot);
   }

@@ -2,7 +2,7 @@ import {
   CreatePlot,
   CreatePlotProps,
 } from "../../../core/usecase/plot/CreatePlot";
-import { inject, injectable } from "inversify";
+import { injectable } from "inversify";
 import {
   Body,
   Delete,
@@ -24,7 +24,6 @@ import { AddSeriesToPlot } from "../../../core/usecase/plot/AddSeriesToPlot";
 import { AddSeriesToPlotCommand } from "./commands/AddSeriesToPlotCommand";
 import { AddSubPlotCommand } from "./commands/AddSubPlotCommand";
 import { AddSubPlot } from "../../../core/usecase/plot/AddSubPlot";
-import { DCMIdentifiers } from "../../../core/usecase/DCMIdentifiers";
 import { GetAllPlot } from "../../../core/usecase/plot/GetAllPlot";
 import { GetPlotByCodeName } from "../../..//core/usecase/plot/GetPlotByCodeName";
 import { GetPlotByCodeNameCommand } from "./commands/GetPlotByCodeNameCommand";
@@ -36,7 +35,6 @@ export class PlotController {
     new PlotApiResponseMapper();
 
   constructor(
-    @inject(DCMIdentifiers.plotRepository)
     private readonly _createPlot: CreatePlot,
     private readonly _updatePlot: UpdatePlot,
     private readonly _deletePlot: DeletePlot,
@@ -150,21 +148,6 @@ export class PlotController {
     return response.sendStatus(200);
   }
 
-  @Post("/addsubplot")
-  async addSubPlot(@Res() response: Response, @Body() cmd: AddSubPlotCommand) {
-    try {
-      console.log("cmd", cmd)
-      await this._addSubPlot.execute({
-        currentId: cmd.currentId,
-        plotIdToAdd: cmd.plotIdToAdd,
-      });
-      return response.status(200);
-    } catch (e) {
-      return response.status(400).send({
-        message: e.message,
-      });
-    }
-  }
   @Post("/all")
   async getAllPlot(@Res() response: Response) {
     try {
@@ -180,5 +163,20 @@ export class PlotController {
         message: e.message,
       });
     }
+  }
+
+  @Post("/addsubplot")
+  async addSubPlot(@Res() response: Response, @Body() cmd: AddSubPlotCommand) {
+    try {
+    await this._addSubPlot.execute({
+      currentId: cmd.currentId,
+      plotIdToAdd: cmd.plotIdToAdd,
+    });
+    return response.sendStatus(200);
+  } catch (e) {
+    return response.status(400).send({
+      message: e.message,
+    });
+  }
   }
 }

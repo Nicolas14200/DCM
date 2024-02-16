@@ -10,9 +10,7 @@ import { CreatePlot } from "../../core/usecase/plot/CreatePlot";
 import { v4 } from "uuid";
 import { UpdatePlot } from "../../core/usecase/plot/UpdatePlot";
 import { DeletePlot } from "../../core/usecase/plot/DeletePlot";
-import { MongoDbEventCultureRepository } from "../../adapters/repositories/mongoDb/MongoDbEventCultureRepository";
 import { AddSeriesToPlot } from "../../core/usecase/plot/AddSeriesToPlot";
-import { AddSubPlot } from "../../core/usecase/plot/AddSubPlot";
 
 const app = express();
 
@@ -20,7 +18,6 @@ configureExpress(app);
 
 describe("e2e - PlotController", () => {
   let plotRepo: MongoDbPlotRepository;
-  let eventCultureRepo: MongoDbEventCultureRepository;
   let plot: Plot;
   let connection: Connection;
   
@@ -28,7 +25,6 @@ describe("e2e - PlotController", () => {
     await mongoose.connect(`mongodb://127.0.0.1:27017/DCM`);    
     connection = mongoose.createConnection("mongodb://127.0.0.1:27017/DCM");
     plotRepo = new MongoDbPlotRepository();
-    eventCultureRepo = new MongoDbEventCultureRepository();
     plot = Plot.create({
       name: `${v4()}`,
       codeName: `QSDFG123`,
@@ -39,7 +35,7 @@ describe("e2e - PlotController", () => {
       plank: 1,
     });
     await plotRepo.save(plot);
-    setTimeout(()=>{}, 20000);
+    setTimeout(()=>{}, 50000);
   });
 
   afterAll(async () => {
@@ -59,7 +55,7 @@ describe("e2e - PlotController", () => {
         plank: 2,
       })
       .expect((response) => {
-        console.log(CreatePlot.name, response.body);
+        console.log(CreatePlot.name, response.error);
       })
       .expect(201);
   });
@@ -141,19 +137,6 @@ describe("e2e - PlotController", () => {
       .expect(200);
   });
 
-  it("Should return 200 and add a subplot", async () => {
-    await request(app)
-      .post("/plot/addsubplot")
-      .send({
-        currentId: plot.props.id,
-        plotIdToAdd: "subPlotId",
-      })
-      .expect((response) => {
-        console.log(AddSubPlot.name, response.error);
-      })
-      .expect(200);
-  });
-
   it("Should return 200 and return all plot", async () => {
     await request(app)
       .post("/plot/all")
@@ -162,8 +145,16 @@ describe("e2e - PlotController", () => {
         expect(response.body[0].codeName).toEqual(plot.props.codeName);
       });
   });
-  
 
+  it("Should return 200 and add a subplot", async () => {
+    await request(app)
+      .post("/plot/addsubplot")
+      .send({
+        currentId: plot.props.id,
+        plotIdToAdd: "subPlotId",
+      })
+      .expect(200)
+  });
 });
 
 

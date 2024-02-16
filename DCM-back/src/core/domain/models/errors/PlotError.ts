@@ -5,4 +5,5 @@ export namespace PlotError {
     export class GetByIdFailed extends DomainError{}
     export class PlotExist extends DomainError{}
     export class PlotDeleteFailed extends DomainError{}
+    export class PlotNotFound extends DomainError{}
    }

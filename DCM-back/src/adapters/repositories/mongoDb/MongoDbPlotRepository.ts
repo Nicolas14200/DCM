@@ -50,7 +50,7 @@ export class MongoDbPlotRepository implements PlotRepository {
       pebbles: plotModel.pebbles,
       plank: plotModel.plank,
       series: plotModel.series.map((elem) => elem) as Series[],
-      subPlot: plotModel.subPlot,
+      subPlot: plot.props.subPlot.map((elem) => elem),
       eventCulture: plotModel.eventCulture.map((elem) => elem),
     });
   }
@@ -73,7 +73,7 @@ export class MongoDbPlotRepository implements PlotRepository {
             pebbles: plot.props.pebbles,
             plank: plot.props.plank,
             series: plot.props.series.map((elem) => elem) as Series[],
-            subPlot: plot.props.subPlot,
+            subPlot: plot.props.subPlot.map((elem) => elem),
             eventCulture: plot.props.eventCulture.map((elem) => elem),
           },
         },
