@@ -4,11 +4,11 @@ import { MongoDbPlotRepository } from "../../repositories/mongoDb/MongoDbPlotRep
 import { StarsLevel } from "../../../core/domain/valueObjects/StarsLevel";
 
 describe("Integration - MongoDbPlotRepository", () => {
-  let PlotRepo: MongoDbPlotRepository;
+  let plotRepo: MongoDbPlotRepository;
   let plot: Plot;
 
   beforeAll(async () => {
-    PlotRepo = new MongoDbPlotRepository();
+    plotRepo = new MongoDbPlotRepository();
     await mongoose.connect(`mongodb://127.0.0.1:27017/DCM`);
     mongoose.createConnection(`mongodb://127.0.0.1:27017/DCM`);
     plot = Plot.create({
@@ -20,7 +20,7 @@ describe("Integration - MongoDbPlotRepository", () => {
       pebbles: StarsLevel.one,
       plank: 2,
     });
-    await PlotRepo.save(plot);
+    await plotRepo.save(plot);
   });
 
   it("Should save a plot", async () => {
@@ -34,7 +34,7 @@ describe("Integration - MongoDbPlotRepository", () => {
       plank: 2,
     });
 
-    const plotExist: Plot = await PlotRepo.save(plot01);
+    const plotExist: Plot = await plotRepo.save(plot01);
     expect(plotExist.props.name).toEqual(plot01.props.name);
     expect(plotExist.props.codeName).toEqual(plot01.props.codeName);
   });
@@ -49,36 +49,34 @@ describe("Integration - MongoDbPlotRepository", () => {
       pebbles: StarsLevel.one,
       plank: 2,
     });
-    await PlotRepo.save(plotToUpdate);
+    await plotRepo.save(plotToUpdate);
     plotToUpdate.addSeries({
       vegetableVariety: "carotte",
       nbPlank: 10,
     });
-    const plotExist: Plot = await PlotRepo.update(plotToUpdate);
+    const plotExist: Plot = await plotRepo.update(plotToUpdate);
     expect(plotExist.props.series[0].vegetableVariety).toEqual(plotToUpdate.props.series[0].vegetableVariety);
   });
 
   it("Should return all plot", async () => {
-    const allPlot: Plot[] = await PlotRepo.getAll();
-    allPlot.forEach((plot)=> {
-          expect(plot).toMatchObject(plot)
-    })
+    const allPlot: Plot[] = await plotRepo.getAll();
+    expect(allPlot.length > 0).toEqual(true);
   });
 
   it("Should return a plot by is id", async () => {
-    const plotById: Plot = await PlotRepo.getById(plot.props.id);
+    const plotById: Plot = await plotRepo.getById(plot.props.id);
     expect(plotById.props.name).toEqual(plot.props.name);
   });
 
   it("Should return a plot by is codeName", async () => {
-    const plotByCodeName: Plot = await PlotRepo.getByCodeName(
+    const plotByCodeName: Plot = await plotRepo.getByCodeName(
       plot.props.codeName
     );
     expect(plotByCodeName.props.codeName).toEqual(plot.props.codeName);
   });
 
   it("Should delelete a plot", async () => {
-    const plotToDelete: boolean = await PlotRepo.delete(plot.props.id);
+    const plotToDelete: boolean = await plotRepo.delete(plot.props.id);
     expect(plotToDelete).toEqual(true);
   });
 });
