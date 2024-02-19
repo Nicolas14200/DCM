@@ -34,6 +34,10 @@ describe("Integration - MongoDbEventCultureRepository", () => {
         });
     })
 
+    afterAll(async () => {
+        await mongoose.disconnect();
+      });
+      
     it("Should SAVE a plot ", async () => {
         const eventCultureExist =  await eventCultureRepo.save(eventCulture);
         expect(eventCultureExist.props.note).toEqual("Note");

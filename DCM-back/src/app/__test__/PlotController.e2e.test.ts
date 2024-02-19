@@ -35,7 +35,7 @@ describe("e2e - PlotController", () => {
   });
 
   afterAll(async () => {
-    await connection.close();
+    await mongoose.disconnect();
   });
 
   it("Should return 201 and create a plot", async () => {

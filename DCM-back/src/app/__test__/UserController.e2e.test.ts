@@ -51,6 +51,10 @@ describe("e2e - UserController", () => {
         })
         await userRepo.save(userToDelete);
     });
+    
+    afterAll(async () => {
+        await mongoose.disconnect();
+      });
 
     it("Should save a user in mnogoDb", async () => {
         await request(app)

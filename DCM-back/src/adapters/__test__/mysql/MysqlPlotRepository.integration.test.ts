@@ -3,13 +3,15 @@ import { connect } from "./connectDb";
 import { MysqlPlotRepository } from "../../repositories/mysql/MysqlPlotRepository";
 import { Plot } from "../../../core/domain/entities/plot/Plot";
 import { v4 } from "uuid";
+import { Connection } from "mysql2";
 
 describe("Integration - MysqlPlotRepository", () => {
   let plotRepo: MysqlPlotRepository;
   let plot: Plot;
-
+  let connection: Connection;
   beforeAll(async () => {
-    plotRepo = new MysqlPlotRepository(await connect);
+    connection = await connect;
+    plotRepo = new MysqlPlotRepository(connection);
     plot = Plot.create({
       codeName: "ASQDE7874",
       heigth: 10,
@@ -20,6 +22,10 @@ describe("Integration - MysqlPlotRepository", () => {
       width: 3,
     });
     await plotRepo.save(plot);
+  });
+
+  afterAll(async () => {
+    connection.end()
   });
 
   it("Should save a plot", async () => {

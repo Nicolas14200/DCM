@@ -20,6 +20,10 @@ describe("Integration - MongoDbUserRepository", () => {
     await userRepo.save(user);
   });
 
+  afterAll(async () => {
+    await mongoose.disconnect();
+  });
+  
   it("should save a user in a mongodb repository", async () => {
     const antoherUser = User.create({
       email: `nico${v4()}@yopmaiol.com`,

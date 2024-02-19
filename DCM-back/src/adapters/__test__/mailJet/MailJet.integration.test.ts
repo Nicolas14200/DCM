@@ -2,7 +2,7 @@ import "reflect-metadata";
 import Mailjet from "node-mailjet";
 import { MailJetGateway } from "../../gateways/mailJet/MailJetGateway";
 import { Msg } from "../../../core/domain/valueObjects/Msg";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
 describe("Integration - MailJet", () => {
@@ -10,31 +10,32 @@ describe("Integration - MailJet", () => {
   let msg: Msg;
 
   beforeAll(() => {
-
-
     const mailJet = new Mailjet({
       apiKey: process.env.MJ_APIKEY_PUBLIC,
-      apiSecret: process.env.MJ_APIKEY_PRIVATE
+      apiSecret: process.env.MJ_APIKEY_PRIVATE,
     });
 
     mailJetGateway = new MailJetGateway(mailJet);
     msg = {
-        From: {
-            Email: "nostradanar@outlook.com",
-            Name: "Danar",
-          },
-          To: [{
-            Email: "nostradanar@outlook.com",
-            Name: "Danar",
-          }],
-          Subject: "Greetings from Mailjet.",
-          TextPart:  "My first Mailjet email",
-          HTMLPart: "<h3>Dear passenger 1, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />May the delivery force be with you!",
-          CustomID: "AppGettingStartedTest"
-    }
+      From: {
+        Email: "nostradanar@outlook.com",
+        Name: "Danar",
+      },
+      To: [
+        {
+          Email: "nostradanar@outlook.com",
+          Name: "Danar",
+        },
+      ],
+      Subject: "Greetings from Mailjet.",
+      TextPart: "My first Mailjet email",
+      HTMLPart:
+        "<h3>Dear passenger 1, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />May the delivery force be with you!",
+      CustomID: "AppGettingStartedTest",
+    };
   });
 
   it("Should send a email", async () => {
-    mailJetGateway.send(msg)
+    await mailJetGateway.send(msg);
   });
 });

@@ -47,6 +47,10 @@ describe("e2e - EventCultureController", () => {
     await eventCultureRepo.save(eventCulture);
   });
 
+  afterAll(async () => {
+    await mongoose.disconnect();
+  });
+  
   it("Should return 200 and create an Event culture", async () => {
     await request(app)
       .post("/event/create")
