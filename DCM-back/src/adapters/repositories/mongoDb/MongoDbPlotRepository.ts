@@ -7,7 +7,6 @@ import {
   MongoDbPlotMapperProps,
 } from "./mappers/MongoDbPlotMapper";
 import { PlotModel } from "./models/PlotModel";
-import { PlotError } from "../../../core/domain/models/errors/PlotError";
 import { Series } from "../../../core/domain/valueObjects/Series";
 
 @injectable()
@@ -56,7 +55,13 @@ export class MongoDbPlotRepository implements PlotRepository {
   }
 
   async update(plot: Plot): Promise<Plot> {
-    const plotToUpdate: MongoDbPlotMapperProps =
+    const series = plot.props.series.map((elem) => {
+      return {
+        vegetableVariety: elem.vegetableVariety,
+        nbPlank: elem.nbPlank,
+      };
+    })
+
       await PlotModel.findOneAndUpdate(
         {
           id: plot.props.id,
@@ -72,7 +77,7 @@ export class MongoDbPlotRepository implements PlotRepository {
             ph: plot.props.ph,
             pebbles: plot.props.pebbles,
             plank: plot.props.plank,
-            series: plot.props.series.map((elem) => elem) as Series[],
+            series: plot.props.series.map((elem) => elem),
             subPlot: plot.props.subPlot.map((elem) => elem),
             eventCulture: plot.props.eventCulture.map((elem) => elem),
           },
@@ -81,10 +86,12 @@ export class MongoDbPlotRepository implements PlotRepository {
           upsert: true,
         }
       );
+
+    const plotToUpdate = await this.getById(plot.props.id);
     if (!plotToUpdate) {
       return null;
     }
-    return this.mongoDbPlotMapper.toDomain(plotToUpdate);
+    return plotToUpdate;
   }
 
   async getById(id: string): Promise<Plot> {

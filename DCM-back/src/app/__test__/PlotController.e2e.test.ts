@@ -6,11 +6,7 @@ import { MongoDbPlotRepository } from "../../adapters/repositories/mongoDb/Mongo
 import { Plot } from "../../core/domain/entities/plot/Plot";
 import { StarsLevel } from "../../core/domain/valueObjects/StarsLevel";
 import request from "supertest";
-import { CreatePlot } from "../../core/usecase/plot/CreatePlot";
 import { v4 } from "uuid";
-import { UpdatePlot } from "../../core/usecase/plot/UpdatePlot";
-import { DeletePlot } from "../../core/usecase/plot/DeletePlot";
-import { AddSeriesToPlot } from "../../core/usecase/plot/AddSeriesToPlot";
 
 const app = express();
 
@@ -54,9 +50,6 @@ describe("e2e - PlotController", () => {
         pebbles: StarsLevel.one,
         plank: 2,
       })
-      .expect((response) => {
-        console.log(CreatePlot.name, response.error);
-      })
       .expect(201);
   });
 
@@ -72,9 +65,6 @@ describe("e2e - PlotController", () => {
         plank: plot.props.plank,
         heigth: plot.props.heigth,
         width: plot.props.width,
-      })
-      .expect((response) => {
-        console.log(UpdatePlot.name, response.body);
       })
       .expect(201);
   });
@@ -94,9 +84,6 @@ describe("e2e - PlotController", () => {
     await request(app)
       .delete(`/plot/${plotToDelete.props.id}`)
       .expect(200)
-      .expect((response) => {
-        console.log(DeletePlot.name, response.body);
-      });
   });
 
   it("Should return 200 and a plot via is Id", async () => {
@@ -115,7 +102,6 @@ describe("e2e - PlotController", () => {
         codeName: plot.props.codeName 
         })
       .expect((response) => {
-        console.log(response.body);
         expect(response.body.props.codeName).toEqual(plot.props.codeName );
       })
       .expect(200);
@@ -131,9 +117,6 @@ describe("e2e - PlotController", () => {
           vegetableVariety: "carotte",
         },
       })
-      .expect((response) => {
-        console.log(AddSeriesToPlot.name, response.body);
-      })
       .expect(200);
   });
 
@@ -142,7 +125,7 @@ describe("e2e - PlotController", () => {
       .post("/plot/all")
       .expect(200)
       .expect((response) => {
-        expect(response.body[0].codeName).toEqual(plot.props.codeName);
+        expect(response.body[response.body.length-1].codeName).toEqual(plot.props.codeName);
       });
   });
 

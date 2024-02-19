@@ -7,11 +7,6 @@ import { configureExpress } from "../config/configureExpress"
 import { User } from '../../core/domain/entities/user/User';
 import { MongoDbUserRepository } from '../../adapters/repositories/mongoDb/MongoDbUserRepository';
 import { Role } from '../../core/domain/valueObjects/Role';
-import { UpdateUser } from '../../core/usecase/user/UpdateUser';
-import { GetUserById } from '../../core/usecase/user/GetUserById';
-import { DeleteUser } from '../../core/usecase/user/DeleteUser';
-import { GeneratePasswordRecovery } from "../../core/usecase/user/password/GeneratePasswordRecovery"
-import { ResetPassword } from '../../core/usecase/user/password/ResetPassword';
 import { JwtIdentityGateway } from '../../adapters/gateways/jwt/JwtIdentityGateway';
 import { DCMIdentifiers } from '../../core/usecase/DCMIdentifiers';
 import { AppDependencies } from '../config/AppDependencies';
@@ -66,9 +61,6 @@ describe("e2e - UserController", () => {
             role: "ADMIN",
             name: "DALAM",
         })
-        .expect( response => {
-          
-        })
         .expect(201)
     })
 
@@ -91,9 +83,6 @@ describe("e2e - UserController", () => {
             name: "ELO",
             email: userToUpdate.props.email
         })
-        .expect( response => {
-            console.log(UpdateUser.name, response.text)
-        })
         .expect(200)
     })
 
@@ -102,9 +91,6 @@ describe("e2e - UserController", () => {
         .get(`/user/${user.props.id}`)
         .set({ 
             Authorization: token 
-        })
-        .expect(response => {
-            console.log(GetUserById.name, response.error)
         })
         .expect(200)
     })
@@ -117,9 +103,6 @@ describe("e2e - UserController", () => {
         })
         .send({
             email : user.props.email
-        })
-        .expect(response => {
-            console.log(GeneratePasswordRecovery.name, response.body)
         })
         .expect(200)
     })
@@ -135,9 +118,6 @@ describe("e2e - UserController", () => {
             email: user.props.email,
             securityCode:user.props.securityCode
         })
-        .expect(response => {
-            console.log(ResetPassword.name, response.error)
-        })
         .expect(200)
     })
 
@@ -149,9 +129,6 @@ describe("e2e - UserController", () => {
         })
         .send({
             id: userToDelete.props.id,
-        })
-        .expect(response => {
-            console.log(DeleteUser.name, response.error)
         })
         .expect(204)
     })

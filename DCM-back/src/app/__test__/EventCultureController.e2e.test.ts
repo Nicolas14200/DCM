@@ -54,9 +54,6 @@ describe("e2e - EventCultureController", () => {
         note: "NOTE",
         plotId: plot.props.id,
       })
-      .expect((response) => {
-        console.log(CreateEventCulture.name, response.error);
-      })
       .expect(201);
   });
 
@@ -66,10 +63,6 @@ describe("e2e - EventCultureController", () => {
       .send({
         plotId: plot.props.id,
       })
-
-      .expect((response) => {
-        console.log(GetEventsCulturesByPlotId.name, response.body);
-      })
       .expect(200);
   });
 
@@ -78,9 +71,6 @@ describe("e2e - EventCultureController", () => {
       .post("/event/getbyid")
       .send({
         id: eventCulture.props.id,
-      })
-      .expect((response) => {
-        console.log(GetEventCultureById.name, response.body);
       })
       .expect(200);
   });
@@ -92,9 +82,6 @@ describe("e2e - EventCultureController", () => {
         id: eventCulture.props.id,
         note: "NEW NOTE",
       })
-      .expect((response) => {
-        console.log(UpdateEventCulture.name, response.body);
-      })
       .expect(200);
   });
 
@@ -103,9 +90,6 @@ describe("e2e - EventCultureController", () => {
       .delete("/event/delete")
       .send({
         id: eventCulture.props.id,
-      })
-      .expect((response) => {
-        console.log(GetEventCultureById.name, response.body);
       })
       .expect(200);
   });
