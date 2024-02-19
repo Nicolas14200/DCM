@@ -88,6 +88,9 @@ jobs:
 
       - name: build app
         run: |
+            --mount=type=secret,id=github_token \
+            cat /run/secrets/github_token
+        run: |
           cd DCM-back
           docker build -t nicolas14200/digital_culture_manager:latest .
 
