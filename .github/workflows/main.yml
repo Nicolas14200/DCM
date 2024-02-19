@@ -88,7 +88,7 @@ jobs:
 
       - name: build app
         run: |
-            --mount=type=secret,id=github_token \
+            --mount=type=secret,id=github_token
             cat /run/secrets/github_token
         run: |
           cd DCM-back
