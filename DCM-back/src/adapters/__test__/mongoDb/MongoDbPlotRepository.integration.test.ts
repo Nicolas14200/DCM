@@ -6,6 +6,7 @@ import { StarsLevel } from "../../../core/domain/valueObjects/StarsLevel";
 describe("Integration - MongoDbPlotRepository", () => {
   let plotRepo: MongoDbPlotRepository;
   let plot: Plot;
+  let plotToUpdate: Plot;
 
   beforeAll(async () => {
     plotRepo = new MongoDbPlotRepository();
@@ -19,6 +20,16 @@ describe("Integration - MongoDbPlotRepository", () => {
       pebbles: StarsLevel.one,
       plank: 2,
     });
+    plotToUpdate = Plot.create({
+      name: "parcelle 01",
+      codeName: "VFOR22",
+      width: 10,
+      heigth: 10,
+      ph: 1,
+      pebbles: StarsLevel.one,
+      plank: 2,
+    });
+    await plotRepo.save(plotToUpdate);
     await plotRepo.save(plot);
   });
 
@@ -36,23 +47,12 @@ describe("Integration - MongoDbPlotRepository", () => {
       pebbles: StarsLevel.one,
       plank: 2,
     });
-
     const plotExist: Plot = await plotRepo.save(plot01);
     expect(plotExist.props.name).toEqual(plot01.props.name);
     expect(plotExist.props.codeName).toEqual(plot01.props.codeName);
   });
 
   it("Should update a plot", async () => {
-    const plotToUpdate = Plot.create({
-      name: "parcelle 01",
-      codeName: "DEKF25",
-      width: 10,
-      heigth: 10,
-      ph: 1,
-      pebbles: StarsLevel.one,
-      plank: 2,
-    });
-    await plotRepo.save(plotToUpdate);
     plotToUpdate.addSeries({
       vegetableVariety: "carotte",
       nbPlank: 10,
@@ -63,7 +63,7 @@ describe("Integration - MongoDbPlotRepository", () => {
 
   it("Should return all plot", async () => {
     const allPlot: Plot[] = await plotRepo.getAll();
-    //expect(allPlot.length > 0).toEqual(true);
+    expect(allPlot.length > 0).toEqual(true);
   });
 
   it("Should return a plot by is id", async () => {
@@ -78,8 +78,10 @@ describe("Integration - MongoDbPlotRepository", () => {
     expect(plotByCodeName.props.codeName).toEqual(plot.props.codeName);
   });
 
-  it("Should delelete a plot", async () => {
+  it("Should delete a plot", async () => {
     const plotToDelete: boolean = await plotRepo.delete(plot.props.id);
     expect(plotToDelete).toEqual(true);
   });
+
+
 });

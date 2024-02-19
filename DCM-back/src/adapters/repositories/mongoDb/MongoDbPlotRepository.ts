@@ -32,7 +32,7 @@ export class MongoDbPlotRepository implements PlotRepository {
       pebbles: plot.props.pebbles,
       plank: plot.props.plank,
       series: plot.props.series.map((elem) => elem),
-      subPlot: plot.props.subPlot,
+      subPlot: plot.props.subPlot.map((elem) => elem),
       eventCulture: plot.props.eventCulture.map((elem) => elem),
     });
 
