@@ -94,5 +94,4 @@ jobs:
       - name: push-dokerhub
         run: |
           docker login --username nicolas14200 --password dckr_pat_Jk8HbkVw1XBbkg71je1Yrcmb0OQ
-          docker images
           docker push nicolas14200/digital_culture_manager:latest
