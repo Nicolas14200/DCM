@@ -128,9 +128,6 @@ describe("e2e - UserController", () => {
         email: user.props.email,
         securityCode: user.props.securityCode,
       })
-      .expect( response => {
-       console.log(response.error)
-    })
       .expect(200);
   });
 

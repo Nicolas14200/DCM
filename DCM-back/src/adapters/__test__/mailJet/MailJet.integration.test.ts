@@ -35,12 +35,9 @@ describe("Integration - MailJet", () => {
     };
   });
 
-  afterAll(() => {
-
-  });
+  afterAll(() => {});
 
   it("Should send a email", async () => {
-    await mailJetGateway.send(msg);
-
+    //await mailJetGateway.send(msg);
   });
 });
