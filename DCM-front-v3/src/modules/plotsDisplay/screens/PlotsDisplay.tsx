@@ -21,7 +21,6 @@ export const PlotsDisplay: React.FC<PlotsDisplayProps> = () => {
   const [isModalSeriesOpen, setIsModalSeriesOpen] = useState(false);
   const [isModalEventOpen, setIsModalEventOpen] = useState(false);
 
-  
   const handleAllPlot = async () => {
     const apiResult = await getAllPlotViewModel.execute(user?.token as string);
     setPlots(apiResult);
