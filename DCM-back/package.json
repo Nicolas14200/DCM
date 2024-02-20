@@ -5,7 +5,7 @@
   "main": "main.ts",
   "scripts": {
     "start": "ts-node src/index.ts ",
-    "test": "npx jest --runInBand --detectOpenHandles --forceExit",
+    "test": "npx jest --runInBand --no-cache --detectOpenHandles",
     "build": "rm -r dist | true && tsc"
   },
   "author": "Heutte Nicolas",

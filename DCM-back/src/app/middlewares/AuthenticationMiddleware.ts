@@ -10,25 +10,30 @@ import { IdentityGateway } from "../../core/domain/gateways/IdentityGateway";
 export class AuthenticationMiddleware implements ExpressMiddlewareInterface {
   constructor(
     @inject(DCMIdentifiers.identityGateway)
-    private _identityGateway: IdentityGateway,
-    ){}
-  async use(request: AuthenticatedRequest,response: Response,next?: NextFunction): Promise<any> {
+    private _identityGateway: IdentityGateway
+  ) {}
+  async use(
+    request: AuthenticatedRequest,
+    response: Response,
+    next?: NextFunction
+  ): Promise<any> {
     try {
-      
-    const result = await this._identityGateway.decode(
-        request.header('Authorization') as string
-    );
+      const token = request.header("Authorization") as string;
+      if (!token) {
+        throw new AuthenticationError.AuthenticationFailed("No token provided");
+      }
 
-    if (!result) {
-      throw new AuthenticationError.AuthenticationFailed("UNAUTHORIZED")
-    }
+      const decodedToken = await this._identityGateway.decode(
+        request.header("Authorization") as string
+      );
+      if (!decodedToken) {
+        throw new AuthenticationError.AuthenticationFailed("UNAUTHORIZED");
+      }
 
-    request.identity = result;
+      request.identity = decodedToken;
 
-    next();
-
-    }
-    catch(e){
+      next();
+    } catch (e) {
       return response.status(401).send(e.message);
     }
   }

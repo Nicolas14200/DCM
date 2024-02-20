@@ -28,6 +28,7 @@ describe('Unit - ResetPassword', () => {
 
     it("Should reset password of user", async () => {
         await resetPassword.execute({
+            id: user.props.id,
             email:"ben@yopmail.com",
             newPassword:"NEWPASSword123456789",
             securityCode:"azerty123"

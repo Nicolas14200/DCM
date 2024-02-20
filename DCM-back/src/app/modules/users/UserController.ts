@@ -31,6 +31,7 @@ import { GeneratePasswordRecovery } from "../../../core/usecase/user/password/Ge
 import { ResetPassword } from "../../../core/usecase/user/password/ResetPassword";
 import { GeneratePasswordRecoveryCommand } from "./commands/GeneratePasswordRecoveryCommand";
 import { ResetPasswordCommand } from "./commands/ResetPasswordCommand";
+import { AuthenticatedRequest } from "../../config/AuthenticationRequest";
 
 @JsonController("/user")
 @injectable()
@@ -59,41 +60,6 @@ export class UserController {
       });
     }
   }
-
-  @Post("/generatePasswordRecovery")
-  async generatePasswordRecovery(
-    @Res() response: Response,
-    @Body() cmd: GeneratePasswordRecoveryCommand
-  ) {
-    try {
-      await this._generatePasswordRecovery.execute(cmd.email);
-      return (response.statusCode = 200);
-    } catch (error) {
-      return response.status(400).send({
-        message: error.message,
-      });
-    }
-  }
-
-  @Post("/resetPassword")
-  async resetPassword(
-    @Res() response: Response,
-    @Body() cmd: ResetPasswordCommand
-  ) {
-    try {
-      await this._resetPassword.execute({
-        newPassword: cmd.newPassword,
-        email: cmd.email,
-        securityCode: cmd.securityCode,
-      });
-      return (response.statusCode = 200);
-    } catch (error) {
-      return response.status(400).send({
-        message: error.message,
-      });
-    }
-  }
-
   @Post("/create")
   async createUser(@Res() response: Response, @Body() cmd: CreateUserCommand) {
     try {
@@ -110,6 +76,9 @@ export class UserController {
         id: user.props.id,
         role: user.props.role,
       });
+
+      response.set("Authorization", token);
+
       return response.status(201).send({
         ...this.userApiResponseMapper.fromDomain(user),
         token,
@@ -132,6 +101,9 @@ export class UserController {
         id: user.props.id,
         role: user.props.role,
       });
+ 
+      response.set("Authorization", token);
+
       return response.status(200).send({
         ...this.userApiResponseMapper.fromDomain(user),
         token,
@@ -165,7 +137,7 @@ export class UserController {
 
   @UseBefore(AuthenticationMiddleware)
   @Get("/:id")
-  async getUserById(@Req() request: Request, @Res() response: Response) {
+  async getUserById(@Req() request: AuthenticatedRequest, @Res() response: Response) {
     try {
       const user = await this._getUserById.execute(request.params.id);
       return response.status(200).send({
@@ -187,6 +159,44 @@ export class UserController {
     } catch (e) {
       return response.status(400).send({
         message: e.message,
+      });
+    }
+  }
+
+  @UseBefore(AuthenticationMiddleware)
+  @Post("/generatePasswordRecovery")
+  async generatePasswordRecovery(
+    @Res() response: Response,
+    @Body() cmd: GeneratePasswordRecoveryCommand
+  ) {
+    try {
+      await this._generatePasswordRecovery.execute(cmd.email);
+      return (response.statusCode = 200);
+    } catch (error) {
+      return response.status(400).send({
+        message: error.message,
+      });
+    }
+  }
+
+  @UseBefore(AuthenticationMiddleware)
+  @Post("/resetPassword")
+  async resetPassword(
+    @Res() response: Response,
+    @Body() cmd: ResetPasswordCommand,
+    @Req() request: AuthenticatedRequest
+  ) {
+    try {
+      await this._resetPassword.execute({
+        id: request.identity.id,
+        newPassword: cmd.newPassword,
+        email: cmd.email,
+        securityCode: cmd.securityCode,
+      });
+      return response.sendStatus(200);
+    } catch (error) {
+      return response.status(400).send({
+        message: error.message,
       });
     }
   }

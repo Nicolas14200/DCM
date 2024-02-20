@@ -16,6 +16,7 @@ export class MailJetGateway implements EmailGateway {
       await this.mailjet.post("send", { version: "v3.1" }).request({
         Messages: [msg],
       });
+
     } catch (error) {
       console.error("Error sending email:", error);
       throw error; 

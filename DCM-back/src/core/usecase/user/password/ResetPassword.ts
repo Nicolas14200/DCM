@@ -7,6 +7,7 @@ import { UserRepository } from "../../../domain/repositories/UserRepository";
 import { Password } from "../../../domain/valueObjects/Password";
 
 export interface ResetPasswordProps {
+    id: string;
     newPassword: string;
     email: string;
     securityCode: string;
@@ -27,7 +28,12 @@ export class ResetPassword implements Usecase<ResetPasswordProps, void> {
         const user = await this.userRepository.getByEmail(payload.email);
         const passwordHash = await this.passwordGateway.encrypt(new Password(payload.newPassword).value);
         user.resetPassword(payload.securityCode, passwordHash);
-        await this.userRepository.save(user)
+        await this.userRepository.update({
+            email: user.props.email,
+            id: user.props.id,
+            name: user.props.name,
+            password: user.props.password
+        })
     }
 
     async canExecute(identity: Identity): Promise<boolean> {

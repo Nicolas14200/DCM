@@ -22,10 +22,12 @@ describe("e2e - UserController", () => {
   let container: AppDependencies;
   let userToUpdate: User;
 
+
   beforeAll(async () => {
     container = await configureExpress(app);
     mongoose.connect(`mongodb://127.0.0.1:27017/DCM`);
     jwtIdentityGateway = await container.get(DCMIdentifiers.identityGateway);
+
     userRepo = new MongoDbUserRepository();
 
     user = User.create({
@@ -126,6 +128,9 @@ describe("e2e - UserController", () => {
         email: user.props.email,
         securityCode: user.props.securityCode,
       })
+      .expect( response => {
+       console.log(response.error)
+    })
       .expect(200);
   });
 
