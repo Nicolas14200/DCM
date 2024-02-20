@@ -8,9 +8,6 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-RUN --mount=type=secret,id=github_token \
-  cat /run/secrets/github_token
-  
 CMD  npm install -g typescript && tsc && node dist/src/index.js
 
 EXPOSE 3000
