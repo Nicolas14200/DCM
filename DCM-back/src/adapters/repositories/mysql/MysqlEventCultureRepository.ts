@@ -106,7 +106,7 @@ export class MysqlEventCultureRepository implements EventCultureRepository {
         `,
       [plotId]
     );
-    console.log("results", results);
+
 
     return results[0].map((eventCulture) => {
       return new EventCulture({
