@@ -1,7 +1,7 @@
-import { IsEmail, Length } from "class-validator";
+import { IsEmail, IsString, Length } from "class-validator";
 
 export class UpdateUserCommand {
-
+    @IsString()
     id: string;
     
     @IsEmail()

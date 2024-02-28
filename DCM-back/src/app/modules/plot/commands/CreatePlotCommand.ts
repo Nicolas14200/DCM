@@ -1,6 +1,4 @@
 import { IsNumber, IsString } from "class-validator";
-import { StarsLevel } from "../../../../core/domain/valueObjects/StarsLevel";
-
 
 export class CreatePlotCommand {
     @IsString()

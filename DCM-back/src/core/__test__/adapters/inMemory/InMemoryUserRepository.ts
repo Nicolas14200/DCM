@@ -29,8 +29,6 @@ export class InMemoryUserRepository implements UserRepository {
     return user;
   }
 
-
-
   async getByEmail(email: string): Promise<User> {
     for (let [id, user] of this.userMap) {
       if (user.props.email === email) {

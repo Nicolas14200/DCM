@@ -27,6 +27,8 @@ import { AddSubPlot } from "../../../core/usecase/plot/AddSubPlot";
 import { GetAllPlot } from "../../../core/usecase/plot/GetAllPlot";
 import { GetPlotByCodeName } from "../../..//core/usecase/plot/GetPlotByCodeName";
 import { GetPlotByCodeNameCommand } from "./commands/GetPlotByCodeNameCommand";
+import { PlotCommandResponse } from "./commands/PlotCommandResponse";
+import { ResponseSchema } from "routing-controllers-openapi";
 
 @JsonController("/plot")
 @injectable()
@@ -57,6 +59,7 @@ export class PlotController {
   }
 
   @Post("/create")
+  @ResponseSchema(PlotCommandResponse)
   async createPlot(@Res() response: Response, @Body() cmd: CreatePlotCommand) {
     try {
       const payload: CreatePlotProps = {
@@ -80,6 +83,7 @@ export class PlotController {
   }
 
   @Put("/")
+  @ResponseSchema(PlotCommandResponse)
   async updatePlot(@Res() response: Response, @Body() cmd: UpdatePlotCommand) {
     try {
       const plot = await this._updatePlot.execute({
@@ -103,6 +107,7 @@ export class PlotController {
   }
 
   @Delete("/:id")
+  @ResponseSchema(PlotCommandResponse)
   async deletePlot(@Res() response: Response, @Req() request: Request) {
     this._deletePlot.execute(request.params.id);
     return response.sendStatus(200);
@@ -117,6 +122,7 @@ export class PlotController {
   }
 
   @Post("/getplotbycodename")
+  @ResponseSchema(PlotCommandResponse)
   async getPlotByCodeName(
     @Res() response: Response,
     @Body() cmd: GetPlotByCodeNameCommand
@@ -149,6 +155,7 @@ export class PlotController {
   }
 
   @Post("/all")
+  @ResponseSchema(PlotCommandResponse)
   async getAllPlot(@Res() response: Response) {
     try {
       const allPlot = await this._getAllPlot.execute();
@@ -168,15 +175,15 @@ export class PlotController {
   @Post("/addsubplot")
   async addSubPlot(@Res() response: Response, @Body() cmd: AddSubPlotCommand) {
     try {
-    await this._addSubPlot.execute({
-      currentId: cmd.currentId,
-      plotIdToAdd: cmd.plotIdToAdd,
-    });
-    return response.sendStatus(200);
-  } catch (e) {
-    return response.status(400).send({
-      message: e.message,
-    });
-  }
+      await this._addSubPlot.execute({
+        currentId: cmd.currentId,
+        plotIdToAdd: cmd.plotIdToAdd,
+      });
+      return response.sendStatus(200);
+    } catch (e) {
+      return response.status(400).send({
+        message: e.message,
+      });
+    }
   }
 }

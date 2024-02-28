@@ -3,6 +3,7 @@ import express from "express";
 import mongoose from 'mongoose';
 import cors from "cors";
 import { configureExpress } from './app/config/configureExpress';
+import { configureDocumentation } from './app/doc';
 
 const PORT = 3000;
 
@@ -15,6 +16,9 @@ if(process.env.DB === "mongoDb"){
     mongoose.connect('mongodb://127.0.0.1:27017/DCM');
 }
 
+configureDocumentation(app);
+
 app.listen(PORT, () => {
     console.info(`Starting server on http://localhost:${PORT}`);
 })
+

@@ -27,6 +27,7 @@ describe("Unit - CreateUser", () => {
     const userExist: User = await userRepo.getByEmail(user.props.email);
     expect(userExist.props.email).toEqual("benjamon@yopmail.com");
   });
+  
   it("should return an error if user exist", async () => {
     await createUser.execute({
       name: "Ben",

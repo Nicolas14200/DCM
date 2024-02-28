@@ -1,7 +1,17 @@
 import { injectable } from "inversify";
-import { Body, Delete, JsonController, Post, Put, Res } from "routing-controllers";
+import {
+  Body,
+  Delete,
+  JsonController,
+  Post,
+  Put,
+  Res,
+} from "routing-controllers";
 import { EventCultureApiResponseMapper } from "./dto/EventCultureApiResponseMapper";
-import { CreateEventCultureCommand } from "./commands/CreateEventCultureCommand";
+import {
+  CreateEventCultureCommand,
+  EventCultureCommandResponse,
+} from "./commands/CreateEventCultureCommand";
 import { CreateEventCulture } from "../../../core/usecase/eventCulture/CreateEventCulture";
 import { Response } from "express";
 import { GetEventsCulturesByPlotIdCommand } from "./commands/GetEventsCulturesByPlotIdCommand";
@@ -12,11 +22,11 @@ import { DeleteEventCulture } from "../../../core/usecase/eventCulture/DeleteEve
 import { DeleteEventsCulturesByIdCommand } from "./commands/DeleteEventsCulturesByIdCommand";
 import { UpdateEventCulture } from "../../../core/usecase/eventCulture/UpdateEventCulture";
 import { UpdateEventCultureCommand } from "./commands/UpdateEventCultureCommand";
+import { OpenAPI, ResponseSchema } from "routing-controllers-openapi";
 
 @JsonController("/event")
 @injectable()
 export class EventCultureController {
-
   private eventCultureApiResponseMapper: EventCultureApiResponseMapper =
     new EventCultureApiResponseMapper();
 
@@ -29,6 +39,7 @@ export class EventCultureController {
   ) {}
 
   @Post("/create")
+  @ResponseSchema(EventCultureCommandResponse)
   async createEventCulture(
     @Res() response: Response,
     @Body() cmd: CreateEventCultureCommand
@@ -44,7 +55,7 @@ export class EventCultureController {
         vegetable: cmd.vegetable,
         method: cmd.method,
         nbHuman: cmd.nbHuman,
-        nbHours:cmd.nbHours,
+        nbHours: cmd.nbHours,
         succes: cmd.succes,
         disease: cmd.disease,
         bug: cmd.bug,
@@ -60,6 +71,7 @@ export class EventCultureController {
   }
 
   @Post("/getbyid")
+  @ResponseSchema(EventCultureCommandResponse)
   async getEventsCulturesById(
     @Res() response: Response,
     @Body() cmd: GetEventsCulturesByIdCommand
@@ -77,6 +89,7 @@ export class EventCultureController {
   }
 
   @Post("/getbyplotid")
+  @ResponseSchema(EventCultureCommandResponse)
   async getEventsCulturesByPlotId(
     @Res() response: Response,
     @Body() cmd: GetEventsCulturesByPlotIdCommand
@@ -114,6 +127,7 @@ export class EventCultureController {
   }
 
   @Put("/update")
+  @ResponseSchema(EventCultureCommandResponse)
   async updateEventCulture(
     @Res() response: Response,
     @Body() cmd: UpdateEventCultureCommand
@@ -124,13 +138,12 @@ export class EventCultureController {
         note: cmd.note,
       });
       return response.status(200).send({
-        ...this.eventCultureApiResponseMapper.fromDomain(newEventCulture)
-    });
+        ...this.eventCultureApiResponseMapper.fromDomain(newEventCulture),
+      });
     } catch (e) {
       return response.status(400).send({
         message: e.message,
       });
     }
   }
-
 }

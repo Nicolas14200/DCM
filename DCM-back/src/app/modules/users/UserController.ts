@@ -10,7 +10,7 @@ import {
   UseBefore,
 } from "routing-controllers";
 import { CreateUserCommand } from "./commands/CreateUserCommand";
-import { Request, Response } from "express";
+import { Response } from "express";
 import {
   CreateUser,
   CreateUserProps,
@@ -32,6 +32,8 @@ import { ResetPassword } from "../../../core/usecase/user/password/ResetPassword
 import { GeneratePasswordRecoveryCommand } from "./commands/GeneratePasswordRecoveryCommand";
 import { ResetPasswordCommand } from "./commands/ResetPasswordCommand";
 import { AuthenticatedRequest } from "../../config/AuthenticationRequest";
+import { ResponseSchema } from "routing-controllers-openapi";
+import { UserCommandResponse } from "./commands/UserCommandResponse";
 
 @JsonController("/user")
 @injectable()
@@ -61,6 +63,7 @@ export class UserController {
     }
   }
   @Post("/create")
+  @ResponseSchema(UserCommandResponse)
   async createUser(@Res() response: Response, @Body() cmd: CreateUserCommand) {
     try {
       const payload: CreateUserProps = {
@@ -91,6 +94,7 @@ export class UserController {
   }
 
   @Post("/signin")
+  @ResponseSchema(UserCommandResponse)
   async signIn(@Res() response: Response, @Body() cmd: SignInCommand) {
     try {
       const user = await this._signIn.execute({
@@ -117,6 +121,7 @@ export class UserController {
 
   @UseBefore(AuthenticationMiddleware)
   @Put("/")
+  @ResponseSchema(UserCommandResponse)
   async updateUser(@Res() response: Response, @Body() cmd: UpdateUserCommand) {
     try {
       const user = await this._updateUser.execute({
@@ -137,6 +142,7 @@ export class UserController {
 
   @UseBefore(AuthenticationMiddleware)
   @Get("/:id")
+  @ResponseSchema(UserCommandResponse)
   async getUserById(@Req() request: AuthenticatedRequest, @Res() response: Response) {
     try {
       const user = await this._getUserById.execute(request.params.id);
