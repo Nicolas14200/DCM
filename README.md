@@ -11,7 +11,7 @@ Clone the repository and install the dependencies:
 ## 🏃‍♂️ Execution
 
 To init the application:
-
+`cd DCM`
 `make setup`
 
 ## 🧪 Testing
