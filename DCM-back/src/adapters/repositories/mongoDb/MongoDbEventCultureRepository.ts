@@ -48,6 +48,7 @@ export class MongoDbEventCultureRepository implements EventCultureRepository {
             bug: eventCulture.props.bug,
         });
         await eventCultureModel.save();
+        
         return new EventCulture({
             id: eventCultureModel.id,
             date: eventCultureModel.date,

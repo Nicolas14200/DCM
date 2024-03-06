@@ -58,11 +58,8 @@ export const AddEventCulture = ({ open, onClose }: AddEventCultureProps) => {
         bug: bug,
         vegetable: formData.get("vegetable") as unknown as Vegetable,
       });
-    }
-    if (plotActif) {
       await setCaractPlot(plotActif.codeName);
     }
-
     onClose();
   };
 
@@ -136,9 +133,6 @@ export const AddEventCulture = ({ open, onClose }: AddEventCultureProps) => {
             >
               <p>Type d'événement culturel</p>
               <FormControl sx={{ marginBottom: "16px" }}>
-                <InputLabel id="typeEventCultureLabel">
-                  Type d'événement culturel
-                </InputLabel>
                 <Select
                   labelId="typeEventCultureLabel"
                   id="typeEventCulture"
@@ -159,7 +153,6 @@ export const AddEventCulture = ({ open, onClose }: AddEventCultureProps) => {
 
               <p>Machine</p>
               <FormControl sx={{ marginBottom: "16px" }}>
-                <InputLabel id="TypeMachineLabel">Machine</InputLabel>
                 <Select
                   labelId="TypeMachineLabel"
                   id="TypeMachine"
@@ -255,7 +248,6 @@ export const AddEventCulture = ({ open, onClose }: AddEventCultureProps) => {
 
               <p>Apport d'engrais</p>
               <FormControl sx={{ marginBottom: "16px" }}>
-                <InputLabel id="BringType">Apport</InputLabel>
                 <Select
                   labelId="BringType"
                   id="BringType"

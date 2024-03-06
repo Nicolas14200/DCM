@@ -85,7 +85,7 @@ export const AddSeries = ({ open, onClose }: AddSeriesProps) => {
               bgcolor: "background.paper",
             }}
           >
-            <h1 className="text-center pt-[8px] pb-[8px]">
+            <h1 className="text-center mt-[25%] pt-[8px] pb-[8px]">
               Series de Legume :
             </h1>
             <form

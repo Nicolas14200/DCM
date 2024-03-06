@@ -110,9 +110,10 @@ export class EventCultureApi {
   }
 
   async updateEventCulture(payload: UpdateEventCultureProps){
+
     try {
-      const result = await httpClient.post(
-        "event/delete",
+      const result = await httpClient.put(
+        "event/update",
         {
           ...payload
         },

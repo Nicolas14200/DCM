@@ -13,7 +13,6 @@ export interface CreatePlotProps {
 }
 class PlotsApi {
   async getAllPlot(token: string) {
-
     const result = await httpClient.post("/plot/all", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -74,6 +73,7 @@ class PlotsApi {
   }
   async getPlotByCodeName(payload: { codeName: string; token: string }) {
     try {
+      console.log(payload)
       const result = await httpClient.post(
         "/plot/getplotbycodename",
         {

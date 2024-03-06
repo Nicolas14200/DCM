@@ -40,7 +40,7 @@ export class UpdateEventCulture implements Usecase<UpdateEventCultureProps, Even
         eventCulture.update({
             ...payload
         })
-        await this._eventCultureRepository.save(eventCulture);
+        await this._eventCultureRepository.update(eventCulture);
         return eventCulture;
     }
     async canExecute(identity: Identity): Promise<boolean> {

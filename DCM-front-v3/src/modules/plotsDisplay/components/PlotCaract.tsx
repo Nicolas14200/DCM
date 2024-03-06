@@ -9,8 +9,7 @@ export const PlotCaract: React.FC<plotActifProps> = () => {
 
   return (
     <>
-      <h1 className="border">CARACTERISTIQUE
-      </h1>
+      <h1 className="border">CARACTERISTIQUE</h1>
       {plotActif && (
         <>
           <p>area : {plotActif.area}</p>
