@@ -4,47 +4,79 @@ import { signUpViewModel } from "../viewModel/SignUpViewModel";
 import { User } from "../../../core/domains/types/User";
 import { useNavigate } from "react-router";
 import { Header } from "../../components/Header";
+import { useState } from "react";
 
 export const SignUp = () => {
   const navigate = useNavigate();
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const handleSubmitSignUp = async (
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
-    const data: FormData = new FormData(event.currentTarget);
     const apiResult: User = await signUpViewModel.signUp({
-      email: data.get("email") as string,
-      password: data.get("password") as string,
-      name: data.get("name") as string,
+      email: email,
+      password: password,
+      name: name,
     });
-    if(apiResult.token){
-      navigate("/plots")
+    if (apiResult.token) {
+      navigate("/plots");
     }
   };
+
   const handleReturn = () => {
-    navigate("/")
-  }
+    navigate("/");
+  };
+
+  const handleInputChangeName = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const name = event.target.value;
+    setName(name);
+  };
+
+  const handleInputChangeEmail = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const mail = event.target.value;
+    setEmail(mail);
+  };
+
+  const handleInputChangePassword = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const passsword = event.target.value;
+    setPassword(passsword);
+  };
+
   return (
     <div className="flex items-center justify-center h-screen flex-col">
-    <Header />
-    <div className="flex items-center justify-center h-screen flex-col">
-   
-      <Grid container component="main">
-        <Grid item component={Paper}>
-          <Box component="form" onSubmit={handleSubmitSignUp}>
-            <TextFields name="name" />
-            <TextFields name="email" />
-            <TextFields name="password" />
-            <Button type="submit" fullWidth variant="contained">
-              Sign Up
-            </Button>
-          </Box>
+      <Header />
+      <div className="flex items-center justify-center h-screen flex-col">
+        <Grid container component="main">
+          <Grid item component={Paper}>
+            <Box component="form" onSubmit={handleSubmitSignUp}>
+              <TextFields name="name" onChange={handleInputChangeName} />
+              <TextFields name="email" onChange={handleInputChangeEmail} />
+              <TextFields
+                name="password"
+                onChange={handleInputChangePassword}
+              />
+              <Button type="submit" fullWidth variant="contained">
+                Sign Up
+              </Button>
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
-      <p onClick={handleReturn} className="hover:cursor-pointer hover:text-slate-400">retour</p>
-    </div>
-    
+        <p
+          onClick={handleReturn}
+          className="hover:cursor-pointer hover:text-slate-400"
+        >
+          retour
+        </p>
+      </div>
     </div>
   );
 };

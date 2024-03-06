@@ -1,4 +1,4 @@
-import { userApi } from "../../../adapters/api/user/UserApi";
+import { userApi } from "../../../api/user/UserApi";
 
 interface UserResponse {
     id: string;

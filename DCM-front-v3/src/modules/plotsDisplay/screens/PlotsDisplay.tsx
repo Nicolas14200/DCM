@@ -7,47 +7,58 @@ import { useContext, useEffect, useState } from "react";
 import { CreatePlot } from "../components/CreatePlot";
 import { AddSeries } from "../components/AddSeries";
 import { AddEventCulture } from "../components/AddEventCulture";
-import { PlotsContext, UpdatePlotContext, UserContext } from "../../../config/Context";
-import { getAllPlotViewModel } from "../viewModels/GetAllPlotViewModel";
+import {
+  PlotsContext,
+  UserContext,
+} from "../../../config/Context";
+import { plotsApi } from "../../../api/plots/PlotsApi";
 
 export interface PlotsDisplayProps {}
 
 export const PlotsDisplay: React.FC<PlotsDisplayProps> = () => {
   const { user } = useContext(UserContext);
   const { setPlots } = useContext(PlotsContext);
-  const { updatePlot, setUpdatePlot } = useContext(UpdatePlotContext);
-  
+
   const [isModalOpen, setModalOpen] = useState(false);
   const [isModalSeriesOpen, setIsModalSeriesOpen] = useState(false);
   const [isModalEventOpen, setIsModalEventOpen] = useState(false);
 
   const handleAllPlot = async () => {
-    const apiResult = await getAllPlotViewModel.execute(user?.token as string);
-    setPlots(apiResult);
-    setUpdatePlot(false);
+    const allPlots = await plotsApi.getAllPlot(user?.token as string);
+    setPlots(allPlots);
   };
+
   const openModalCreatePlot = () => {
     setModalOpen(true);
   };
-  const closeModalCreatePlot = () => {
+
+  const closeModalCreatePlot = async () => {
+    await handleAllPlot();
     setModalOpen(false);
   };
-  const openModalAddSeries = () => {
-    setIsModalSeriesOpen(true)
-  }
 
-  const closeModalAddSeries = () => {
-    setIsModalSeriesOpen(false)
-  }
+  const openModalAddSeries = () => {
+    setIsModalSeriesOpen(true);
+  };
+
+  const closeModalAddSeries = async () => {
+    await handleAllPlot();
+    setIsModalSeriesOpen(false);
+  };
+
   const openModalAddEvent = () => {
-    setIsModalEventOpen(true)
-  }
-  const closeModalAddEvent = () => {
-    setIsModalEventOpen(false)
-  }
+    setIsModalEventOpen(true);
+  };
+
+  const closeModalAddEvent = async () => {
+    await handleAllPlot();
+    setIsModalEventOpen(false);
+  };
+
   useEffect(() => {
     handleAllPlot();
-  }, [updatePlot]);
+  }, []);
+
   return (
     <>
       <div className="flex-collumns text-center">
@@ -73,14 +84,18 @@ export const PlotsDisplay: React.FC<PlotsDisplayProps> = () => {
         {isModalOpen && (
           <CreatePlot onClose={closeModalCreatePlot} open={isModalOpen} />
         )}
-        {isModalSeriesOpen && (
-          <AddSeries onClose={closeModalAddSeries} open={isModalSeriesOpen} />
-        )}
-        {isModalEventOpen && (
-          <AddEventCulture onClose={closeModalAddEvent} open={isModalEventOpen} />
-        )
 
-        }
+        {isModalSeriesOpen && (
+          <AddSeries onClose={closeModalAddSeries} open={isModalSeriesOpen} setCaractPlot={handleAllPlot}/>
+        )}
+
+        {isModalEventOpen && (
+          <AddEventCulture
+            onClose={closeModalAddEvent}
+            open={isModalEventOpen}
+          />
+        )}
+
         <div className="flex">
           <div className="border-2 w-[75%] h-[50%]">
             <PlotList />

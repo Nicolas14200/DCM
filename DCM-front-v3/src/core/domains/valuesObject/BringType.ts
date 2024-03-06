@@ -1,5 +1,6 @@
 export enum BringType {
-    manure="manure",
-    limstone="limstone",
-    compost="compost"
+  NONE = "None",
+  manure = "manure",
+  limstone = "limstone",
+  compost = "compost",
 }

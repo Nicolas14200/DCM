@@ -2,23 +2,22 @@ import { useState, useContext, useEffect } from "react";
 import {
   UserContext,
   PlotsContext,
-  PlotsCaracContext,
-  UpdatePlotContext,
+  plotActifContext,
 } from "../../../config/Context";
 import { PlotModel } from "../../../core/domains/types/PlotModel";
-import { getPlotByCodeNameViewModel } from "../viewModels/GetPlotByCodeNameViewModel";
+import { plotsApi } from "../../../api/plots/PlotsApi";
 
 export interface PlotDisplayProps {}
 
 export const PlotList: React.FC<PlotDisplayProps> = () => {
   const { user } = useContext(UserContext);
   const { plots } = useContext(PlotsContext);
+  const { setplotActif } = useContext(plotActifContext);
+
   const [selectedPlot, setSelectedPlot] = useState<PlotModel | null>(null);
-  const { setPlotCaract } = useContext(PlotsCaracContext);
-  const { updatePlot, setUpdatePlot } = useContext(UpdatePlotContext);
 
   const setCaractPlot = async (codeName: string) => {
-    const plotByCodeName = await getPlotByCodeNameViewModel.execute({
+    const plotByCodeName = await plotsApi.getPlotByCodeName({
       codeName: codeName,
       token: user?.token as string,
     });
@@ -36,16 +35,15 @@ export const PlotList: React.FC<PlotDisplayProps> = () => {
       subPlot: plotByCodeName.props.subPlot,
       eventCulture: plotByCodeName.props.eventCulture,
     };
-    setUpdatePlot(true);
     setSelectedPlot(PlotForContext);
-    setPlotCaract(PlotForContext);
+    setplotActif(PlotForContext);
   };
 
   useEffect(() => {
     if (selectedPlot) {
       setCaractPlot(selectedPlot?.codeName as string);
     }
-  }, [updatePlot]);
+  }, []);
 
   return (
     <>

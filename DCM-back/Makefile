@@ -42,10 +42,10 @@ db-delete:
 display-port:
 	sudo lsof -i :3306
 
-.PHONY: mongo-start
-mongo-start:
-	sudo docker run --name mongodb -p 27017:27017 -d mongo:latest
+# .PHONY: mongo-start
+# mongo-start:
+# 	sudo docker run --name mongodb -p 27017:27017 -d mongo:latest
 
-.PHONY: mongo-kill
-mongo-kill: 
-	sudo docker rm -f mongodb
+# .PHONY: mongo-kill
+# mongo-kill: 
+# 	sudo docker rm -f mongodb

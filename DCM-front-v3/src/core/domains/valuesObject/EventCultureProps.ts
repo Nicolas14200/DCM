@@ -9,7 +9,6 @@ export interface EventCultureProps {
     note: string;
     plotId: string;
     typeEventCulture?: TypeEventCulture;
-    machine?: Machine;
     bringType?: BringType;
     quantity?: number;
     vegetable?: Vegetable;
@@ -19,4 +18,5 @@ export interface EventCultureProps {
     succes?: number;
     disease?: string;
     bug?: string;
+    machine: Machine;
 }

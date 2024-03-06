@@ -1,26 +1,27 @@
 import { useContext } from "react";
-import { PlotsCaracContext } from "../../../config/Context";
+import { plotActifContext } from "../../../config/Context";
 import { Series } from "../../../core/domains/valuesObject/Series";
 
-export interface PlotCaractProps {}
+export interface plotActifProps {}
 
-export const PlotCaract: React.FC<PlotCaractProps> = () => {
-  const { plotCaract } = useContext(PlotsCaracContext);
+export const PlotCaract: React.FC<plotActifProps> = () => {
+  const { plotActif } = useContext(plotActifContext);
 
   return (
     <>
-      <h1 className="border">CARACTERISTIQUE</h1>
-      {plotCaract && (
+      <h1 className="border">CARACTERISTIQUE
+      </h1>
+      {plotActif && (
         <>
-          <p>area : {plotCaract.area}</p>
-          <p>longueur : {plotCaract.heigth}</p>
-          <p>largeur : {plotCaract.width}</p>
-          <p>cailloux : {plotCaract.pebbles}</p>
-          <p>ph : {plotCaract.ph}</p>
-          <p>planches Totals: {plotCaract.plank}</p>
+          <p>area : {plotActif.area}</p>
+          <p>longueur : {plotActif.heigth}</p>
+          <p>largeur : {plotActif.width}</p>
+          <p>cailloux : {plotActif.pebbles}</p>
+          <p>ph : {plotActif.ph}</p>
+          <p>planches Totals: {plotActif.plank}</p>
           <div className="border-2">
             series :
-            {plotCaract.series.map((serie: Series, index: number) => {
+            {plotActif.series.map((serie: Series, index: number) => {
               return (
                 <div key={index}>
                   <p>

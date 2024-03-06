@@ -1,39 +1,79 @@
 import { Box, Button, Modal } from "@mui/material";
 import { TextFields } from "../../auth/components/TextField";
-import { FormEvent, useContext } from "react";
-import { addSeriesViewModel } from "../viewModels/AddSeriesViewModel";
-import {
-  PlotsCaracContext,
-  UpdatePlotContext,
-  UserContext,
-} from "../../../config/Context";
+import { FormEvent, useContext, useState } from "react";
+import { plotActifContext, UserContext } from "../../../config/Context";
+import { plotsApi } from "../../../api/plots/PlotsApi";
+import { PlotModel } from "../../../core/domains/types/PlotModel";
 
 interface AddSeriesProps {
   onClose: () => void;
   open: boolean;
+  setCaractPlot: (codeName: string) => Promise<void>;
 }
 
 export const AddSeries = ({ open, onClose }: AddSeriesProps) => {
   const { user } = useContext(UserContext);
-  const { plotCaract } = useContext(PlotsCaracContext);
-  const { setUpdatePlot } = useContext(UpdatePlotContext);
-  
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const { plotActif, setplotActif } = useContext(plotActifContext);
+
+  const [formData, setFormData] = useState({
+    plotId: "",
+    series: {
+      vegetableVariety: "",
+      nbPlank: 0,
+    },
+  });
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      series: {
+        ...prevFormData.series,
+        [name]: value,
+      },
+    }));
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    if (plotCaract && formData) {
-      addSeriesViewModel.execute({
-        plotId: plotCaract.id,
-        series: {
-          nbPlank: formData.get("nbPlank") as string,
-          vegetableVariety: formData.get("vegetableVariety") as string,
-        },
+    if (plotActif && formData) {
+      await plotsApi.addSeries({
+        id: plotActif.id,
         token: user?.token as string,
+        series: {
+          vegetableVariety: formData.series.vegetableVariety,
+          nbPlank: formData.series.nbPlank,
+        },
       });
+      if (setCaractPlot) {
+        await setCaractPlot(plotActif.codeName);
+      }
     }
-    setUpdatePlot(true);
     onClose();
   };
+
+  const setCaractPlot = async (codeName: string) => {
+    const plotByCodeName = await plotsApi.getPlotByCodeName({
+      codeName: codeName,
+      token: user?.token as string,
+    });
+    const PlotForContext: PlotModel = {
+      id: plotByCodeName.props.id,
+      name: plotByCodeName.props.name,
+      codeName: plotByCodeName.props.codeName,
+      width: plotByCodeName.props.width,
+      heigth: plotByCodeName.props.heigth,
+      area: plotByCodeName.props.area,
+      ph: plotByCodeName.props.ph,
+      pebbles: plotByCodeName.props.pebbles,
+      plank: plotByCodeName.props.plank,
+      series: plotByCodeName.props.series,
+      subPlot: plotByCodeName.props.subPlot,
+      eventCulture: plotByCodeName.props.eventCulture,
+    };
+    setplotActif(PlotForContext);
+  };
+
   return (
     <div>
       <Modal open={open} onClose={onClose}>
@@ -52,8 +92,11 @@ export const AddSeries = ({ open, onClose }: AddSeriesProps) => {
               onSubmit={handleSubmit}
               className="p-[8px] flex-collumns text-center"
             >
-              <TextFields name="vegetableVariety" />
-              <TextFields name="nbPlank" />
+              <TextFields
+                name="vegetableVariety"
+                onChange={handleInputChange}
+              />
+              <TextFields name="nbPlank" onChange={handleInputChange} />
               <Button type="submit" variant="contained">
                 Ajouter une Series
               </Button>

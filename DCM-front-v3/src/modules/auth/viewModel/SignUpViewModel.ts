@@ -1,4 +1,4 @@
-import { userApi } from "../../../adapters/api/user/UserApi";
+import { userApi } from "../../../api/user/UserApi";
 
 interface signUpProps {
   name: string;
@@ -13,7 +13,6 @@ class SignUpViewModel {
       name: payload.name,
       password: payload.password,
     });
-    console.log(result);
     return result;
   }
 }

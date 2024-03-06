@@ -24,7 +24,6 @@ let MysqlEventCultureRepository = class MysqlEventCultureRepository {
         this.connect = connect;
     }
     async save(eventCulture) {
-        console.log("eventCulture", eventCulture);
         try {
             const [results] = await this.connect.promise().query(`
             INSERT IGNORE INTO event_culture (id, 
@@ -110,7 +109,7 @@ let MysqlEventCultureRepository = class MysqlEventCultureRepository {
         FROM event_culture AS e
         WHERE e.plot_id = ?
         `, [plotId]);
-        console.log("results", results);
+
         return results[0].map((eventCulture) => {
             return new EventCulture_1.EventCulture({
                 id: eventCulture.id,

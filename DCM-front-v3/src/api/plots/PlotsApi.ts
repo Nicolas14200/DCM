@@ -1,5 +1,5 @@
-import { PlotModel } from "../../../core/domains/types/PlotModel";
-import { Series } from "../../../core/domains/valuesObject/Series";
+import { PlotModel } from "../../core/domains/types/PlotModel";
+import { Series } from "../../core/domains/valuesObject/Series";
 import { httpClient } from "../httpClient";
 export interface CreatePlotProps {
   name: string;
@@ -53,7 +53,6 @@ class PlotsApi {
     });
   }
   async updatePlot(payload: { plot: PlotModel; id: string; token: string }) {
-    console.log("payload", payload, payload.id);
     await httpClient.put(
       `/plot/`,
       {

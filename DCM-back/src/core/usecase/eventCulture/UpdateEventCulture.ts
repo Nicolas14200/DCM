@@ -22,7 +22,7 @@ export class UpdateEventCultureProps {
     nbHuman?: number;
     nbHours?: number;
     succes?: number;
-    disease?: String;
+    disease?: string;
     bug?: string;
 }
 

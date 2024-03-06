@@ -1,11 +1,13 @@
 .PHONY: mongo-start
 mongo-start:
-	@if ! sudo docker ps -a --format '{{.Names}}' | grep -q '^mongodb$$'; then \
-		sudo docker run --name mongodb -p 27017:27017 -d mongo:latest; \
+	if docker ps -a --format '{{.Names}}' | grep -q '^mongodb$$'; then \
+		docker start mongodb; \
+	else \
+		docker run --name mongodb -p 27017:27017 -d mongo:latest; \
 	fi
 
 .PHONY: mongo-kill
-mongo-kill: 
+mongo-kill:
 	sudo docker rm -f mongodb
 
 .PHONY: install-dep
@@ -19,7 +21,8 @@ start-app:
 	cd DCM-ElectronApp && npm start
 
 .PHONY: setup
-setup: install-dep mongo-start start-app
+setup: 
+	install-dep mongo-start start-app
 
 .PHONY: test
 test:

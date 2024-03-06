@@ -111,13 +111,16 @@ export class EventCultureController {
     }
   }
 
-  @Delete("/delete")
+  @Post("/delete")
   async deleteEventCultureById(
     @Res() response: Response,
     @Body() cmd: DeleteEventsCulturesByIdCommand
   ) {
     try {
-      await this._deleteEventCulture.execute(cmd.id);
+      await this._deleteEventCulture.execute({
+        id: cmd.id,
+        plotId: cmd.plotId,
+      });
       return response.sendStatus(200);
     } catch (e) {
       return response.status(400).send({
@@ -136,6 +139,17 @@ export class EventCultureController {
       const newEventCulture = await this._updateEventCulture.execute({
         id: cmd.id,
         note: cmd.note,
+        typeEventCulture: cmd.typeEventCulture,
+        machine: cmd.machine,
+        bringType: cmd.bringType,
+        quantity: cmd.quantity,
+        vegetable: cmd.vegetable,
+        method: cmd.method,
+        nbHuman: cmd.nbHuman,
+        nbHours: cmd.nbHours,
+        succes: cmd.succes,
+        disease: cmd.disease,
+        bug: cmd.bug,
       });
       return response.status(200).send({
         ...this.eventCultureApiResponseMapper.fromDomain(newEventCulture),

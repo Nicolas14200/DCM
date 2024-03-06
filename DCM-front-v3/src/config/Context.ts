@@ -24,13 +24,13 @@ export const PlotsContext = React.createContext<PlotContextType>({
 });
 
 export interface PlotCaracContextType {
-  plotCaract: PlotModel | null;
-  setPlotCaract: React.Dispatch<React.SetStateAction<PlotModel | null>>;
+  plotActif: PlotModel | null;
+  setplotActif: React.Dispatch<React.SetStateAction<PlotModel | null>>;
 }
 
-export const PlotsCaracContext = React.createContext<PlotCaracContextType>({
-  plotCaract: null,
-  setPlotCaract: () => {},
+export const plotActifContext = React.createContext<PlotCaracContextType>({
+  plotActif: null,
+  setplotActif: () => {},
 });
 
 export interface EventCultureContextType {
@@ -41,14 +41,4 @@ export interface EventCultureContextType {
 export const EventCultureContext = React.createContext<EventCultureContextType>({
   eventCulture: null,
   setEventCulture: () => {},
-});
-
-export interface UpdatePlotContextType {
-  updatePlot: boolean;
-  setUpdatePlot: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export const UpdatePlotContext = React.createContext<UpdatePlotContextType>({
-  updatePlot: false,
-  setUpdatePlot: () => {},
 });

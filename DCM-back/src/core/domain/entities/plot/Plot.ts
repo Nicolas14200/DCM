@@ -69,5 +69,12 @@ export class Plot {
     addSubPlot(plotId: string){
         this.props.subPlot.push(plotId);
     }
+
+    deleteEventCulture(id: string){
+        const index = this.props.eventCulture.indexOf(id); 
+        if (index !== -1) { 
+            this.props.eventCulture.splice(index, 1);
+        }
+    }
     
 }

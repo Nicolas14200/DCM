@@ -27,9 +27,6 @@ export class UpdateEventCultureCommand {
   @IsString()
   note: string;
 
-  @IsString()
-  plotId: string;
-
   @IsEnum(TypeEventCulture)
   @IsOptional()
   typeEventCulture: TypeEventCulture;

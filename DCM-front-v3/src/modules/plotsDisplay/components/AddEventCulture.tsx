@@ -10,15 +10,12 @@ import {
 } from "@mui/material";
 import { TypeEventCulture } from "../../../core/domains/valuesObject/TypeEventCulture";
 import { Machine } from "../../../core/domains/valuesObject/Machine";
-import { eventCultureApi } from "../../../adapters/api/eventCulture/EventCultureApi";
-import {
-  PlotsCaracContext,
-  UpdatePlotContext,
-  UserContext,
-} from "../../../config/Context";
-import { TextFields } from "../../auth/components/TextField";
+import { eventCultureApi } from "../../../api/eventCulture/EventCultureApi";
+import { plotActifContext, UserContext } from "../../../config/Context";
 import { BringType } from "../../../core/domains/valuesObject/BringType";
 import { Vegetable } from "../../../core/domains/valuesObject/Vegetable";
+import { PlotModel } from "../../../core/domains/types/PlotModel";
+import { plotsApi } from "../../../api/plots/PlotsApi";
 
 interface AddEventCultureProps {
   onClose: () => void;
@@ -27,34 +24,96 @@ interface AddEventCultureProps {
 
 export const AddEventCulture = ({ open, onClose }: AddEventCultureProps) => {
   const { user } = useContext(UserContext);
-  const [typeEventCulture, setTypeEventCulture] = useState<string>("");
-  const [machine, setMachine] = useState<string>("");
-  const { plotCaract } = useContext(PlotsCaracContext);
-  const { setUpdatePlot } = useContext(UpdatePlotContext);
+  const { plotActif, setplotActif } = useContext(plotActifContext);
+
+  const [typeEventCulture, setTypeEventCulture] = useState<string>("None");
+  const [machine, setMachine] = useState<string>("None");
+  const [nbHuman, setNbHuman] = useState<number>(0);
+  const [nbHours, setNbHours] = useState<number>(0);
+  const [bringType, setBringType] = useState<string>("None");
+  const [note, setNote] = useState<string>("");
+  const [quantity, setQuantity] = useState<number>(0);
+  const [method, setMethod] = useState<string>("");
+  const [succes, setSucces] = useState<number>(0);
+  const [disease, setDisease] = useState<string>("");
+  const [bug, setBug] = useState<string>("");
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    if (plotCaract) {
+    if (plotActif && formData) {
       await eventCultureApi.createEventCulture({
-        plotId: plotCaract.id as string,
+        plotId: plotActif.id,
         token: user?.token as string,
-        typeEventCulture: formData.get("typeEventCulture") as TypeEventCulture,
-        note: formData.get("note") as string,
-        machine:formData.get("machine") as Machine,
-        nbHuman: formData.get("nbHuman") as unknown as number,
-        nbHours: formData.get("nbHours") as unknown as number,
-        bringType:formData.get("bringType") as BringType,
-        quantity: formData.get("quantity") as unknown as number,
+        typeEventCulture: typeEventCulture as TypeEventCulture,
+        nbHuman: nbHuman,
+        nbHours: nbHours,
+        bringType: bringType as BringType,
+        machine: machine as Machine,
+        note: note,
+        quantity: quantity,
+        method: method,
+        succes: succes,
+        disease: disease,
+        bug: bug,
         vegetable: formData.get("vegetable") as unknown as Vegetable,
-        method: formData.get("method") as string,
-        succes: formData.get("succes") as unknown as number,
-        disease: formData.get("disease") as string,
-        bug: formData.get("bug") as string,
       });
     }
-    setUpdatePlot(true);
+    if (plotActif) {
+      await setCaractPlot(plotActif.codeName);
+    }
+
     onClose();
+  };
+
+  const setCaractPlot = async (codeName: string) => {
+    const plotByCodeName = await plotsApi.getPlotByCodeName({
+      codeName: codeName,
+      token: user?.token as string,
+    });
+    const PlotForContext: PlotModel = {
+      id: plotByCodeName.props.id,
+      name: plotByCodeName.props.name,
+      codeName: plotByCodeName.props.codeName,
+      width: plotByCodeName.props.width,
+      heigth: plotByCodeName.props.heigth,
+      area: plotByCodeName.props.area,
+      ph: plotByCodeName.props.ph,
+      pebbles: plotByCodeName.props.pebbles,
+      plank: plotByCodeName.props.plank,
+      series: plotByCodeName.props.series,
+      subPlot: plotByCodeName.props.subPlot,
+      eventCulture: plotByCodeName.props.eventCulture,
+    };
+    setplotActif(PlotForContext);
+  };
+
+  const handleChangeNbHuman = (event: any) => {
+    setNbHuman(+event.target.value);
+  };
+
+  const handleChangeNbHours = (event: any) => {
+    setNbHours(+event.target.value);
+  };
+
+  const handleChangeQuantity = (event: any) => {
+    setQuantity(+event.target.value);
+  };
+
+  const handleChangeMethod = (event: any) => {
+    setMethod(event.target.value);
+  };
+
+  const handleChangeSucces = (event: any) => {
+    setSucces(+event.target.value);
+  };
+
+  const handleChangeDisease = (event: any) => {
+    setDisease(event.target.value);
+  };
+
+  const handleChangeBug = (event: any) => {
+    setBug(event.target.value);
   };
 
   return (
@@ -116,17 +175,109 @@ export const AddEventCulture = ({ open, onClose }: AddEventCultureProps) => {
                   ))}
                 </Select>
               </FormControl>
+
               <p>Nombre d'humain</p>
-              <div className="w-[150px] m-[auto]">
-                <TextFields name="nbHuman" />
+              <div>
+                <input
+                  type="number"
+                  name="nbHuman"
+                  value={nbHuman}
+                  onChange={handleChangeNbHuman}
+                  className="text-center border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-500"
+                />
               </div>
+
               <p>Nombre d'heure</p>
-              <div className="w-[150px] m-[auto]">
-                <TextFields name="nbHeure" />
+              <div>
+                <input
+                  type="number"
+                  name="nbHuman"
+                  value={nbHours}
+                  onChange={handleChangeNbHours}
+                  className="text-center border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-500"
+                />
               </div>
+
+              <p>Quantity</p>
+              <div>
+                <input
+                  type="number"
+                  name="quantity"
+                  value={quantity}
+                  onChange={handleChangeQuantity}
+                  className="text-center border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
+              <p>Method</p>
+              <div>
+                <input
+                  type="text"
+                  name="method"
+                  value={method}
+                  onChange={handleChangeMethod}
+                  className="text-center border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
+              <p>Succes</p>
+              <div>
+                <input
+                  type="number"
+                  name="succes"
+                  value={succes}
+                  onChange={handleChangeSucces}
+                  className="text-center border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
+              <p>Disease</p>
+              <div>
+                <input
+                  type="text"
+                  name="disease"
+                  value={disease}
+                  onChange={handleChangeDisease}
+                  className="text-center border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
+              <p>Bug</p>
+              <div>
+                <input
+                  type="text"
+                  name="succes"
+                  value={bug}
+                  onChange={handleChangeBug}
+                  className="text-center border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
+              <p>Apport d'engrais</p>
+              <FormControl sx={{ marginBottom: "16px" }}>
+                <InputLabel id="BringType">Apport</InputLabel>
+                <Select
+                  labelId="BringType"
+                  id="BringType"
+                  name="BringType"
+                  value={bringType}
+                  onChange={(e) => setBringType(e.target.value as string)}
+                  sx={{ width: "150px", marginBottom: "16px" }}
+                >
+                  {Object.values(BringType).map((type, index) => (
+                    <MenuItem key={index} value={type}>
+                      {type}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
               <p>Note</p>
-              <div >
-              <textarea className="border" />
+              <div>
+                <textarea
+                  className="border"
+                  onChange={(e) => setNote(e.target.value as string)}
+                />
               </div>
               <div>
                 <Button type="submit" variant="contained">
